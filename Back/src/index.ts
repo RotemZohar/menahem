@@ -31,7 +31,11 @@ app.get("/posts/byTag/:tag", async (req, res) => {
 app.post("/users/add", async (req, res) => {
   const user = req.body;
   const result = await addUser(user);
-  res.send(user.email);
+  if (result) {
+    res.send(user.email);
+  } else {
+    res.send("adding failed");
+  }
 });
 
 app.get("/users/get:email", async (req, res) => {
