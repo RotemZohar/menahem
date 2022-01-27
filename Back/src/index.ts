@@ -15,7 +15,11 @@ app.get("/hobbies/getAll", async (req, res) => {
 // Posts
 app.get("/posts/byTag/:tag", async (req, res) => {
   const posts = await getPostByTag(req.params.tag);
+  if (posts) {
   res.send(posts);
+  } else {
+    res.json("no values for this tag");
+  }
 });
 
 // Users
