@@ -6,10 +6,12 @@ const app = express();
 const port = 4000;
 app.use(cors());
 
-app.get("/getAllHobbies", (req, res) => {
-  res.send(getAllHobbies());
+app.get("/getAllHobbies", async (req, res) => {
+  const hobbies = await getAllHobbies();
+  res.send(hobbies);
   res.json("ok");
 })
+
 // async function mainDb() {
 
 //   const hobbies = await getAllHobbies();
