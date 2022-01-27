@@ -1,100 +1,99 @@
 import {
   Box,
-  Stepper,
-  Typography,
-  Step,
-  StepLabel,
   Button,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
 } from "@mui/material";
-import React, { useState } from "react";
-import { UserDetails } from "../../types/user";
-import PickUserType from "./PickUserType";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const steps = ["בחירת סוג משתמש", "פרטי משתמש", "הוספת חיה"];
-
+interface Hobby {
+  name: string;
+  _id: string;
+}
 
 const SingupPage = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [userDetails, setUserDetails] = useState<UserDetails>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hobbyId, setHobbyId] = useState("");
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
+  const navigate = useNavigate();
 
-  const isStepOptional = (step: number) => step === 2;
+  useEffect(() => {
+    fetch("http://localhost:4000/hobbies/getAll", {
+      method: "GET",
+    }).then((res) => {
+      res.json().then((data) => setHobbies(data));
+    });
+  }, []);
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const list = useMemo(
+    () =>
+      hobbies.map((hobby) => (
+        <MenuItem value={hobby._id} key={hobby._id}>
+          {hobby.name}
+        </MenuItem>
+      )),
+    [hobbies]
+  );
+
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+
+    fetch("http://localhost:4000/users/add", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+        hobbyId,
+      }),
+    })
+      .then(() => {
+        navigate("/home");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  const handleChange = (event: SelectChangeEvent) => {
+    setHobbyId(event.target.value);
   };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  const getPage = () => {
-    if (activeStep === 0) {
-      return <PickUserType />;
-    }
-    if(activeStep === 1 )
-  };
-
   return (
-    <Box sx={{ width: "100%" }}>
-      <Stepper activeStep={activeStep} dir="rtl">
-        {steps.map((label) => {
-          const stepProps: { completed?: boolean } = {};
-
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
-      {activeStep === steps.length ? (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </>
-      ) : (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "סיום" : "הבא"}
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                דלג
-              </Button>
-            )}
-          </Box>
-          <Button
-            color="inherit"
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-          >
-            חזור
-          </Button>
-        </>
-      )}
+    <Box component="form" onSubmit={onSubmit}>
+      <TextField
+        value={name}
+        label="Name"
+        onChange={(e) => setName(e.target.value)}
+      />
+      <TextField
+        value={email}
+        label="Email"
+        type="email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <TextField
+        value={password}
+        label="Password"
+        type="password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Select
+        value={hobbyId}
+        onChange={handleChange}
+        label="Hobby"
+        placeholder="Hobby"
+      >
+        {list}
+      </Select>
+      <Button type="submit">Create user</Button>
     </Box>
   );
 };
