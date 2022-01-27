@@ -40,21 +40,21 @@ export async function addUser(user: any) {
 }
 
 export async function getUser(email: string) {
-    try {
-      // Connect to the MongoDB cluster
-      await client.connect();
-      const result = await client
-        .db(menahemDbName)
-        .collection(usersCollectionName)
-        .findOne({
-          email: { $eq: email },
-        })
-        .toArray();
-      return result;
-    } catch (e) {
-      console.error(e);
-      return "";
-    } finally {
-      await client.close();
-    }
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .findOne({
+        email: { $eq: email },
+      })
+      .toArray();
+    return result;
+  } catch (e) {
+    console.error(e);
+    return "";
+  } finally {
+    await client.close();
   }
+}
