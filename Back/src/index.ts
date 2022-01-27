@@ -14,7 +14,7 @@ app.get("/hobbies/getAll", async (req, res) => {
 });
 
 // Posts
-app.get("/posts/byType/:tag", async (req, res) => {
+app.get("/posts/byTag/:tag", async (req, res) => {
   const type = req.body('tag');
   const posts = await getPostByType(type);
   res.json("ok");
