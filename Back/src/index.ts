@@ -6,8 +6,8 @@ const port = 4000;
 
 app.get("/getAllHobbies", async (req, res) => {
   const hobbies = await getAllHobbies();
-  res.send(hobbies);
   res.json("ok");
+  res.send(hobbies);
 })
 
 // async function mainDb() {
