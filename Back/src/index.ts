@@ -29,7 +29,7 @@ app.post("/users/add", async (req, res) => {
   const user = req.body;
   console.log(user);
   const result = await addUser(user);
-  res.send(result);
+  res.send(user.email);
 });
 
 app.get("/users/get:email", async (req, res) => {
