@@ -1,7 +1,7 @@
 import express from "express";
 import { getAllHobbies } from "./MongoDb/Hobbies/Actions";
 import { getPostByType } from "./MongoDb/Posts/Actions";
-import { addUser } from "./MongoDb/Users/Actions";
+import { addUser, getUser } from "./MongoDb/Users/Actions";
 
 const app = express();
 const port = 4000;
@@ -14,17 +14,27 @@ app.get("/getAllHobbies", async (req, res) => {
 });
 
 // Posts
-app.get("/getPostByType", async (req, res) => {
+app.get("/getPostsByType", async (req, res) => {
   const type = req.body('tag');
   const posts = await getPostByType(type);
   res.json("ok");
   res.send(posts);
 });
 
-// async function addnewUser() {
-//   const result = await addUser();
-//   console.log(result);
-// }
+// Users
+app.post("/addUser", async (req, res) => {
+  const user = req.body();
+  const result = await addUser(user);
+  res.json("added");
+  res.send(result);
+});
+
+app.get("/getUser", async (req, res) => {
+  const email = req.body('email');
+  const user = await getUser(email);
+  res.json("ok");
+  res.send(user);
+});
 
 //  addnewUser();
 

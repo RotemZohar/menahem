@@ -13,24 +13,24 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-export async function addUser() {
+export async function addUser(user: any) {
   try {
-    const userRom = {
-      email: "RomORm@ROmfdf",
-      password: "fdfdf",
-      hobby: "gaming",
-    };
+    // const userRom = {
+    //   email: "RomORm@ROmfdf",
+    //   password: "fdfdf",
+    //   hobby: "gaming",
+    // };
     // Connect to the MongoDB cluster
     await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(usersCollectionName)
-      .insertOne(userRom);
+      .insertOne(user);
     console.log(
       `${result.insertedCount} new user(s) created with the following id(s):`
     );
     console.log(result.insertedIds);
-    return result;
+    return result.insertedIds;
   } catch (e) {
     console.error(e);
     return "";
@@ -38,3 +38,23 @@ export async function addUser() {
     await client.close();
   }
 }
+
+export async function getUser(email: string) {
+    try {
+      // Connect to the MongoDB cluster
+      await client.connect();
+      const result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .findOne({
+          email: { $eq: email },
+        })
+        .toArray();
+      return result;
+    } catch (e) {
+      console.error(e);
+      return "";
+    } finally {
+      await client.close();
+    }
+  }
