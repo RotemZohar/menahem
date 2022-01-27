@@ -4,10 +4,12 @@ import { getAllHobbies } from "./MongoDb/Hobbies/Actions";
 const app = express();
 const port = 4000;
 
-app.get("/getAllHobbies", (req, res) => {
-  res.send(getAllHobbies());
+app.get("/getAllHobbies", async (req, res) => {
+  const hobbies = await getAllHobbies();
+  res.send(hobbies);
   res.json("ok");
 })
+
 // async function mainDb() {
 
 //   const hobbies = await getAllHobbies();
