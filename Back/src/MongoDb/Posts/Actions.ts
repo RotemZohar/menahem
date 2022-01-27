@@ -31,7 +31,7 @@ export async function getAllPosts() {
   }
 }
 
-export async function getPostByType(type: string) {
+export async function getPostByTag(tag: string) {
   try {
     // Connect to the MongoDB cluster
     await client.connect();
@@ -39,7 +39,7 @@ export async function getPostByType(type: string) {
       .db(menahemDbName)
       .collection(postsCollectionName)
       .find({
-        tag: { $eq: type },
+        tag: { $eq: tag },
       })
       .toArray();
     return result;
