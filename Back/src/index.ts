@@ -22,8 +22,8 @@ app.get("/posts/byTag/:tag", async (req, res) => {
 });
 
 // Users
-app.post("/users/add:user", async (req, res) => {
-  const user = req.body('user');
+app.post("/users/add", async (req, res) => {
+  const user = req.body;
   const result = await addUser(user);
   res.json("added");
   res.send(result);
