@@ -2,7 +2,7 @@ import {
   menahemDbName,
   userName,
   password,
-  hobbiesCollectionName,
+  postsCollectionName,
 } from "../consts";
 
 const { MongoClient } = require("mongodb");
@@ -13,14 +13,34 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-export async function getAllHobbies() {
+export async function getAllPosts() {
   try {
     // Connect to the MongoDB cluster
     await client.connect();
     const result = await client
       .db(menahemDbName)
-      .collection(hobbiesCollectionName)
+      .collection(postsCollectionName)
       .find()
+      .toArray();
+    return result;
+  } catch (e) {
+    console.error(e);
+    return "";
+  } finally {
+    await client.close();
+  }
+}
+
+export async function getPostByType(type: string) {
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
+    const result = await client
+      .db(menahemDbName)
+      .collection(postsCollectionName)
+      .find({
+        tag: { $eq: type },
+      })
       .toArray();
     return result;
   } catch (e) {

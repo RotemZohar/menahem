@@ -2,7 +2,7 @@ import {
   menahemDbName,
   userName,
   password,
-  hobbiesCollectionName,
+  usersCollectionName,
 } from "../consts";
 
 const { MongoClient } = require("mongodb");
@@ -13,15 +13,23 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-export async function getAllHobbies() {
+export async function addUser() {
   try {
+    const userRom = {
+      email: "RomORm@ROmfdf",
+      password: "fdfdf",
+      hobby: "gaming",
+    };
     // Connect to the MongoDB cluster
     await client.connect();
     const result = await client
       .db(menahemDbName)
-      .collection(hobbiesCollectionName)
-      .find()
-      .toArray();
+      .collection(usersCollectionName)
+      .insertOne(userRom);
+    console.log(
+      `${result.insertedCount} new user(s) created with the following id(s):`
+    );
+    console.log(result.insertedIds);
     return result;
   } catch (e) {
     console.error(e);
