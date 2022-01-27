@@ -2,7 +2,7 @@ import express from "express";
 import { getAllHobbies } from "./MongoDb/Hobbies/Actions";
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.get("/getAllHobbies", (req, res) => {
   res.send(getAllHobbies());
