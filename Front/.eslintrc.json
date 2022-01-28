@@ -24,6 +24,7 @@
     "radix": "off",
     "react/function-component-definition": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off"
   }
 }
