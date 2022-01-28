@@ -7,7 +7,9 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setUserId } from "../../redux/slices/userSlice";
 
 interface Hobby {
   name: string;
@@ -21,6 +23,7 @@ const SingupPage = () => {
   const [hobbyId, setHobbyId] = useState("");
   const [hobbies, setHobbies] = useState<Hobby[]>([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("http://localhost:4000/hobbies/getAll", {
@@ -56,16 +59,21 @@ const SingupPage = () => {
         hobbyId,
       }),
     })
-      .then(() => {
-        navigate("/home");
+      .then((res) => {
+        if (res.body) {
+          res.json().then((data) => dispatch(setUserId(data.id)));
+          navigate("/home");
+        }
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
   const handleChange = (event: SelectChangeEvent) => {
     setHobbyId(event.target.value);
   };
+
   return (
     <Box component="form" onSubmit={onSubmit}>
       <TextField
