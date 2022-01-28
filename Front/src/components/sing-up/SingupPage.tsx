@@ -1,6 +1,9 @@
 import {
   Box,
   Button,
+  FormControl,
+  Grid,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -76,32 +79,43 @@ const SingupPage = () => {
 
   return (
     <Box component="form" onSubmit={onSubmit}>
-      <TextField
-        value={name}
-        label="Name"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <TextField
-        value={email}
-        label="Email"
-        type="email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        value={password}
-        label="Password"
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Select
-        value={hobbyId}
-        onChange={handleChange}
-        label="Hobby"
-        placeholder="Hobby"
-      >
-        {list}
-      </Select>
-      <Button type="submit">Create user</Button>
+      <Grid container direction="column">
+        <Grid item margin={1} xs={12}>
+          <TextField
+            value={name}
+            label="Name"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Grid>
+        <Grid item margin={1} xs={12}>
+          <TextField
+            value={email}
+            label="Email"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </Grid>
+        <Grid item margin={1} xs={12}>
+          <TextField
+            value={password}
+            label="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Grid>
+        <Grid item margin={1}>
+          <FormControl sx={{ m: 1, minWidth: 225 }}>
+            <InputLabel>Hobby</InputLabel>
+            <Select value={hobbyId} onChange={handleChange} autoWidth>
+              {list}
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item margin={1} xs={12}>
+          <Button type="submit">Create user</Button>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
