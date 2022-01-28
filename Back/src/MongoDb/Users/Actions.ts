@@ -1,3 +1,4 @@
+import { MongoClient } from "mongodb";
 import {
   menahemDbName,
   userName,
@@ -5,13 +6,9 @@ import {
   usersCollectionName,
 } from "../consts";
 
-const { MongoClient } = require("mongodb");
 
 const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const client = new MongoClient(uri);
 
 export async function addUser(user: any) {
   try {
@@ -26,11 +23,8 @@ export async function addUser(user: any) {
       .db(menahemDbName)
       .collection(usersCollectionName)
       .insertOne(user);
-    console.log(
-      `${result.insertedCount} new user(s) created with the following id(s):`
-    );
-    console.log(result.insertedIds);
-    return result.insertedIds;
+    console.log(result.insertedId);
+    return result.insertedId;
   } catch (e) {
     console.error(e);
     return "";
@@ -48,8 +42,7 @@ export async function getUser(email: string) {
       .collection(usersCollectionName)
       .findOne({
         email: { $eq: email },
-      })
-      .toArray();
+      });
     return result;
   } catch (e) {
     console.error(e);
