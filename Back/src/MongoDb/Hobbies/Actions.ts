@@ -1,3 +1,4 @@
+import { MongoClient } from "mongodb";
 import {
   menahemDbName,
   userName,
@@ -5,13 +6,9 @@ import {
   hobbiesCollectionName,
 } from "../consts";
 
-const { MongoClient } = require("mongodb");
 
 const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const client = new MongoClient(uri);
 
 export async function getAllHobbies() {
   try {

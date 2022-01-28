@@ -27,7 +27,7 @@ export async function addUser(user: any) {
     return result.insertedId;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   } finally {
     await client.close();
   }
