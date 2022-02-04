@@ -9,34 +9,35 @@ function SignInForm() {
   const [passwordError, setPasswordError] = useState(false);
 
 
-  const checkEmail = () => {
+  function checkEmail() {
     const inputEmail = (document.getElementById("email-input") as HTMLInputElement).value;
 
     if (!inputEmail.match(regexpEmail)) {
       setEmailError(true);
-      return (true);
+      return (false);
     } 
       setEmailError(false);
-      return(false);
+      return(true);
     
   };
 
 
-  const checkPassword = () => {
+  function checkPassword() {
     const inputPassword = (document.getElementById("password-input") as HTMLInputElement).value;
 
     if (inputPassword.length < 8) {
       setPasswordError(true);
-      return (true);
+      return (false);
     } 
       setPasswordError(false);
-      return (false);
+      return (true);
     
   };
 
   const handleClick = () => {
-    checkEmail();
-    checkPassword();
+    if (checkEmail() && checkPassword()){
+      // TODO: db connection
+    }
   };
 
   return (
