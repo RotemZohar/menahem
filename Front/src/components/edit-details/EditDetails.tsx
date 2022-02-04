@@ -1,5 +1,4 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-// import React, { useEffect, useState } from "react";
 import React, { useState } from "react";
 
 // import { useDispatch } from "react-redux";
@@ -24,28 +23,24 @@ const EditDetailsPage = () => {
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
-    // fetch("http://localhost:4000/users/add", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email,
-    //     password,
-    //     name,
-    //     hobbyId,
-    //   }),
-    // })
-    //   .then((res) => {
-    //     if (res.body) {
-    //       res.json().then((data) => dispatch(setTag(data.tag)));
-    //       navigate("/home");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
+
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: confirmPassword }),
+    };
+
+    fetch(
+      `http://localhost:4000/users/changePass/61fd079f8855b4c80123094c`,
+      requestOptions
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
