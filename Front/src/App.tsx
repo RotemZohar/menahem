@@ -1,13 +1,14 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import SignInForm from "./components/sign-in/SignInForm";
+import SingupPage from "./components/sing-up/SingupPage";
 
-function App() {
-  return (
-    <div className="App">
-      <SignInForm />
-    </div>
-  );
-}
+const App = () => (
+  <div className="App">
+    <Routes>
+      <Route path="signup" element={<SingupPage />} />
+    </Routes>
+  </div>
+);
 
 export default App;
