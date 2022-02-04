@@ -1,10 +1,7 @@
 {
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true 
-    },
-    "cSpell.words": [
-        "consts",
-        "menahem"
-    ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "cSpell.words": ["consts", "Hobbie", "menahem"]
 }
