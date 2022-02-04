@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { getAllHobbies } from "./MongoDb/Hobbies/Actions";
+import { getAllHobbies, getHobbie } from "./MongoDb/Hobbies/Actions";
 import { getPostByTag } from "./MongoDb/Posts/Actions";
 import { addUser, getUser } from "./MongoDb/Users/Actions";
 
@@ -15,6 +15,11 @@ app.use(express.json());
 app.get("/hobbies/getAll", async (req, res) => {
   const hobbies = await getAllHobbies();
   res.send(hobbies);
+});
+
+app.get("/hobbies/:id", async (req, res) => {
+  const hobbie = await getHobbie(req.params.id);
+  res.send(hobbie);
 });
 
 // Posts
