@@ -1,18 +1,18 @@
 import React from 'react';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
+import SignInForm from '../sign-in/SignInForm';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <Box>
-      <div className="App-header">
-        <h1>Menahem</h1>
-        <Button variant="text" onClick={() => navigate('/register')} style={{textTransform: 'none'}}>Not a member yet? Sign up here!</Button>
-      </div>
-    </Box>
+    <div className="App">
+      <h1>Menahem</h1>
+      <SignInForm />
+      <Button variant="text" onClick={() => navigate('/signup')} style={{textTransform: 'none'}}>Not a member yet? Sign up here!</Button>
+    </div>
   );
 }
 
