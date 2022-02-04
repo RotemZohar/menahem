@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setUserId } from "../../redux/slices/userSlice";
+import { setTag } from "../../redux/slices/userSlice";
 
 interface Hobby {
   name: string;
@@ -31,9 +31,11 @@ const SingupPage = () => {
   useEffect(() => {
     fetch("http://localhost:4000/hobbies/getAll", {
       method: "GET",
-    }).then((res) => {
-      res.json().then((data) => setHobbies(data));
-    });
+    })
+      .then((res) => {
+        res.json().then((data) => setHobbies(data));
+      })
+      .catch((err: any) => console.error(err));
   }, []);
 
   const list = useMemo(
@@ -48,29 +50,32 @@ const SingupPage = () => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-
-    fetch("http://localhost:4000/users/add", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-        name,
-        hobbyId,
-      }),
-    })
-      .then((res) => {
-        if (res.body) {
-          res.json().then((data) => dispatch(setUserId(data.id)));
-          navigate("/home");
-        }
+    if (!email || !password || !hobbyId || !name) {
+      alert("Please insert all fields!");
+    } else {
+      fetch("http://localhost:4000/users/add", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          hobbyId,
+        }),
       })
-      .catch((err) => {
-        console.error(err);
-      });
+        .then((res) => {
+          if (res.body) {
+            res.json().then((data) => dispatch(setTag(data.tag)));
+            navigate("/home");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -82,6 +87,7 @@ const SingupPage = () => {
       <Grid container direction="column">
         <Grid item margin={1} xs={12}>
           <TextField
+            required
             value={name}
             label="Name"
             onChange={(e) => setName(e.target.value)}
@@ -89,6 +95,7 @@ const SingupPage = () => {
         </Grid>
         <Grid item margin={1} xs={12}>
           <TextField
+            required
             value={email}
             label="Email"
             type="email"
@@ -97,6 +104,7 @@ const SingupPage = () => {
         </Grid>
         <Grid item margin={1} xs={12}>
           <TextField
+            required
             value={password}
             label="Password"
             type="password"
@@ -106,7 +114,7 @@ const SingupPage = () => {
         <Grid item margin={1}>
           <FormControl sx={{ m: 1, minWidth: 225 }}>
             <InputLabel>Hobby</InputLabel>
-            <Select value={hobbyId} onChange={handleChange} autoWidth>
+            <Select value={hobbyId} onChange={handleChange} autoWidth required>
               {list}
             </Select>
           </FormControl>
