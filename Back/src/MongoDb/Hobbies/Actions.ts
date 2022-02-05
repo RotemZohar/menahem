@@ -27,3 +27,21 @@ export async function getAllHobbies() {
     await client.close();
   }
 }
+
+export async function getHobbie(_id: string) {
+  try {
+    const query = { "_id": { "$eq":  _id} };
+    // Connect to the MongoDB cluster
+    await client.connect();
+    const result = await client
+      .db(menahemDbName)
+      .collection(hobbiesCollectionName)
+      .findOne(query)
+    return result;
+  } catch (e) {
+    console.error(e);
+    return "";
+  } finally {
+    await client.close();
+  }
+}
