@@ -2,14 +2,16 @@ import React, { useState } from "react";
 
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import { setUserEmail } from "../../redux/slices/userSlice";
 
 function SignInForm() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [user, setUser] = useState({ email: "", password: "" });
   const [passwordInput, setPasswordInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   function showError(message: string) {
     setError(true);
@@ -25,12 +27,10 @@ function SignInForm() {
       fetch(`http://localhost:4000/users/get/${emailInput}`, {
         method: "GET",
       })
-        .then((res) => {
-          res.json().then((data) => setUser(data));
+        .then((res) => res.json())
+        .then((user) => {
           if (user.password === passwordInput) {
-            navigator.sendBeacon(
-              `http://localhost:4000/users/connected/${user.email}`
-            );
+            dispatch(setUserEmail(user.email));
             navigate("/home");
           } else {
             showError("Your email or password is incorrect.");
