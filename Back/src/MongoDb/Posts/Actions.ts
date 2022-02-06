@@ -1,10 +1,10 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId } from "mongodb";
 import {
   menahemDbName,
   userName,
   password,
   postsCollectionName,
-} from '../consts';
+} from "../consts";
 
 const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -21,7 +21,7 @@ export async function getAllPosts() {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -41,7 +41,7 @@ export async function getPostByTag(tag: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -58,7 +58,7 @@ export async function addPost(post: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -85,7 +85,7 @@ export async function editPost(_id: ObjectId, post: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -102,7 +102,7 @@ export async function deletePost(_id: ObjectId) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }

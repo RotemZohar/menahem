@@ -1,10 +1,10 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId } from "mongodb";
 import {
   menahemDbName,
   userName,
   password,
   usersCollectionName,
-} from '../consts';
+} from "../consts";
 
 const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -43,7 +43,7 @@ export async function getUser(email: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -60,7 +60,7 @@ export async function editUserPassword(_id: ObjectId, new_password: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }

@@ -1,10 +1,10 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 import {
   menahemDbName,
   userName,
   password,
   hobbiesCollectionName,
-} from '../consts';
+} from "../consts";
 
 const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -21,7 +21,7 @@ export async function getAllHobbies() {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
@@ -39,7 +39,7 @@ export async function getHobbie(_id: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return '';
+    return "";
   } finally {
     await client.close();
   }
