@@ -1,6 +1,8 @@
 import cors from "cors";
+import http from "http";
 import express from "express";
 import { ObjectId } from "mongodb";
+import socketIo, { Socket as BaseSocket } from "socket.io";
 import { getAllHobbies, getHobbie } from "./MongoDb/Hobbies/Actions";
 import {
   getPostByTag,
@@ -90,18 +92,6 @@ app.post("/users/add", async (req, res) => {
   }
 });
 
-app.post("/users/connected/:email", async (req, res) => {
-  const connected =
-    req.query.connected === undefined || req.query.connected === "true";
-
-  try {
-    await setUserConnected(req.params.email, connected);
-    res.sendStatus(200);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
-
 app.get("/users/get/:email", async (req, res) => {
   const user = await getUser(req.params.email);
   res.send(user);
@@ -117,6 +107,39 @@ app.put("/users/changePass/:id", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+const server = http.createServer(app);
+
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
+});
+
+// socket.io
+
+const io = new socketIo.Server(server, {
+  cors: { origin: "*" },
+});
+
+interface Socket extends BaseSocket {
+  email: string;
+}
+
+io.on("connection", (param) => {
+  const socket = param as Socket;
+
+  socket.on("sign-in", async (email) => {
+    socket.email = email;
+    await setUserConnected(email);
+  });
+
+  socket.on("sign-out", async () => {
+    if (socket.email) {
+      await setUserConnected(socket.email, false);
+    }
+  });
+
+  socket.on("disconnect", async () => {
+    if (socket.email) {
+      await setUserConnected(socket.email, false);
+    }
+  });
 });

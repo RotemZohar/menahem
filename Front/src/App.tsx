@@ -1,34 +1,26 @@
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
+import socketClient from "socket.io-client";
 import SingupPage from "./components/sign-up/SignupPage";
 import EditDetailsPage from "./components/edit-details/EditDetails";
 import LandingPage from "./components/landing-page/LandingPage";
 import { useAppSelector } from "./redux/store";
 
+const socket = socketClient("http://localhost:4000");
+
 const App = () => {
   const email = useAppSelector((state) => state.userReducer.email);
 
   useEffect(() => {
-    // No email = no need to disconnect
+    // No email = no need to connect
     if (!email) return () => {};
 
-    // The function that disconnects
-    const disconnect = () =>
-      navigator.sendBeacon(
-        `http://localhost:4000/users/connected/${email}?connected=false`
-      );
-
-    // When the window closes, disconnect
-    window.addEventListener("unload", disconnect);
+    // Email was just set so we need to connect
+    socket.emit("sign-in", email);
 
     // If the email changed before the window closed
-    return () => {
-      // Disconnect right now
-      disconnect();
-      // No need to disconnect when the window closesS
-      window.removeEventListener("unload", disconnect);
-    };
+    return () => socket.emit("sign-out");
   }, [email]);
 
   return (
