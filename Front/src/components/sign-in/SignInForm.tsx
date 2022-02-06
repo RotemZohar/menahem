@@ -22,12 +22,15 @@ function SignInForm() {
     if (!emailInput || !passwordInput) {
       showError("Please insert all fields!");
     } else {
-      fetch(`http://localhost:4000/users/get${emailInput}`, {
+      fetch(`http://localhost:4000/users/get/${emailInput}`, {
         method: "GET",
       })
         .then((res) => {
           res.json().then((data) => setUser(data));
           if (user.password === passwordInput) {
+            navigator.sendBeacon(
+              `http://localhost:4000/users/connected/${user.email}`
+            );
             navigate("/home");
           } else {
             showError("Your email or password is incorrect.");
