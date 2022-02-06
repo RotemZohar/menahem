@@ -91,7 +91,8 @@ app.post("/users/add", async (req, res) => {
 });
 
 app.post("/users/connected/:email", async (req, res) => {
-  const connected = req.body.connected || true;
+  const connected =
+    req.query.connected === undefined || req.query.connected === "true";
 
   try {
     await setUserConnected(req.params.email, connected);

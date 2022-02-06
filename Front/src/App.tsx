@@ -9,15 +9,27 @@ import { useAppSelector } from "./redux/store";
 const App = () => {
   const email = useAppSelector((state) => state.userReducer.email);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    // No email = no need to disconnect
+    if (!email) return () => {};
+
+    // The function that disconnects
+    const disconnect = () =>
       navigator.sendBeacon(
-        `http://localhost:4000/users/connected/${email}`,
-        JSON.stringify({ connected: false })
+        `http://localhost:4000/users/connected/${email}?connected=false`
       );
-    },
-    []
-  );
+
+    // When the window closes, disconnect
+    window.addEventListener("unload", disconnect);
+
+    // If the email changed before the window closed
+    return () => {
+      // Disconnect right now
+      disconnect();
+      // No need to disconnect when the window closesS
+      window.removeEventListener("unload", disconnect);
+    };
+  }, [email]);
 
   return (
     <div className="App">
