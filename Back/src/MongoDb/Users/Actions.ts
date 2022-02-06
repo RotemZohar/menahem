@@ -65,3 +65,29 @@ export async function editUserPassword(_id: ObjectId, new_password: string) {
     await client.close();
   }
 }
+
+export const getAllUsers = async () => {
+  try {
+    await client.connect();
+    return await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .find()
+      .toArray();
+  } finally {
+    await client.close();
+  }
+};
+
+export const setUserConnected = async (email: string, isConnected = true) => {
+  try {
+    await client.connect();
+
+    await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .updateOne({ email }, { $set: { isConnected } });
+  } finally {
+    await client.close();
+  }
+};

@@ -8,7 +8,13 @@ import {
   editPost,
   deletePost,
 } from "./MongoDb/Posts/Actions";
-import { addUser, getUser, editUserPassword } from "./MongoDb/Users/Actions";
+import {
+  addUser,
+  getUser,
+  editUserPassword,
+  getAllUsers,
+  setUserConnected,
+} from "./MongoDb/Users/Actions";
 
 const app = express();
 const port = 4000;
@@ -68,6 +74,12 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // Users
+
+app.get("/users", async (req, res) => {
+  const user = await getAllUsers();
+  res.json(user);
+});
+
 app.post("/users/add", async (req, res) => {
   const user = req.body;
   const result = await addUser(user);
@@ -75,6 +87,17 @@ app.post("/users/add", async (req, res) => {
     res.send(user.email);
   } else {
     res.send("adding failed");
+  }
+});
+
+app.post("/users/connected/:email", async (req, res) => {
+  const connected = req.body.connected || true;
+
+  try {
+    await setUserConnected(req.params.email, connected);
+    res.sendStatus(200);
+  } catch (e) {
+    res.sendStatus(500);
   }
 });
 
