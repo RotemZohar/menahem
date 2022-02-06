@@ -7,12 +7,12 @@ import LandingPage from "./components/landing-page/LandingPage";
 import { useAppSelector } from "./redux/store";
 
 const App = () => {
-  const user = useAppSelector((state) => state.userReducer.id);
+  const email = useAppSelector((state) => state.userReducer.email);
 
   useEffect(
     () => () => {
       navigator.sendBeacon(
-        `http://localhost:4000/users/connected/${user}`,
+        `http://localhost:4000/users/connected/${email}`,
         JSON.stringify({ connected: false })
       );
     },
