@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
-import { getAllHobbies, getHobbie } from "./MongoDb/Hobbies/Actions";
+import { getAllHobbies, getHobby } from "./MongoDb/Hobbies/Actions";
 import { menahemDbName, dbUserName, dbPassword } from "./MongoDb/consts";
 import {
   getPostByTag,
@@ -34,8 +34,8 @@ app.get("/hobbies/getAll", async (req, res) => {
 });
 
 app.get("/hobbies/:id", async (req, res) => {
-  const hobbie = await getHobbie(client, req.params.id);
-  res.send(hobbie);
+  const hobby = await getHobby(client, req.params.id);
+  res.send(hobby);
 });
 
 // Posts
