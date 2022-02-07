@@ -44,3 +44,20 @@ export async function editUserPassword(
     return "";
   }
 }
+
+export async function validateUser(client: MongoClient, user: any) {
+  try {
+    const jsonUser = JSON.parse(user);
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .findOne({
+        email: { $eq: jsonUser.email },
+        password: { $eq: jsonUser.password },
+      });
+    return result;
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
+}

@@ -9,7 +9,12 @@ import {
   editPost,
   deletePost,
 } from "./MongoDb/Posts/Actions";
-import { addUser, getUser, editUserPassword } from "./MongoDb/Users/Actions";
+import {
+  addUser,
+  getUser,
+  editUserPassword,
+  validateUser,
+} from "./MongoDb/Users/Actions";
 
 const uri = `mongodb+srv://${dbUserName}:${dbPassword}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -90,6 +95,13 @@ app.post("/users/add", async (req, res) => {
 
 app.get("/users/get/:email", async (req, res) => {
   const user = await getUser(client, req.params.email);
+  res.send(user);
+});
+
+app.get("/users/validateUser", async (req, res) => {
+  const userDetails = req.query.user;
+
+  const user = await validateUser(client, userDetails);
   res.send(user);
 });
 
