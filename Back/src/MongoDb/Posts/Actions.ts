@@ -1,18 +1,8 @@
 import { MongoClient, ObjectId } from "mongodb";
-import {
-  menahemDbName,
-  userName,
-  password,
-  postsCollectionName,
-} from "../consts";
+import { menahemDbName, postsCollectionName } from "../consts";
 
-const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
-
-export async function getAllPosts() {
+export async function getAllPosts(client: MongoClient) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(postsCollectionName)
@@ -22,15 +12,11 @@ export async function getAllPosts() {
   } catch (e) {
     console.error(e);
     return "";
-  } finally {
-    await client.close();
   }
 }
 
-export async function getPostByTag(tag: string) {
+export async function getPostByTag(client: MongoClient, tag: string) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(postsCollectionName)
@@ -42,15 +28,11 @@ export async function getPostByTag(tag: string) {
   } catch (e) {
     console.error(e);
     return "";
-  } finally {
-    await client.close();
   }
 }
 
-export async function addPost(post: any) {
+export async function addPost(client: MongoClient, post: any) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(postsCollectionName)
@@ -59,15 +41,11 @@ export async function addPost(post: any) {
   } catch (e) {
     console.error(e);
     return "";
-  } finally {
-    await client.close();
   }
 }
 
-export async function editPost(_id: ObjectId, post: any) {
+export async function editPost(client: MongoClient, _id: ObjectId, post: any) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(postsCollectionName)
@@ -86,15 +64,11 @@ export async function editPost(_id: ObjectId, post: any) {
   } catch (e) {
     console.error(e);
     return "";
-  } finally {
-    await client.close();
   }
 }
 
-export async function deletePost(_id: ObjectId) {
+export async function deletePost(client: MongoClient, _id: ObjectId) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(postsCollectionName)
@@ -103,7 +77,5 @@ export async function deletePost(_id: ObjectId) {
   } catch (e) {
     console.error(e);
     return "";
-  } finally {
-    await client.close();
   }
 }
