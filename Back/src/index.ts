@@ -14,6 +14,7 @@ import {
   getUser,
   editUserPassword,
   validateUser,
+  getAllUsers,
 } from "./MongoDb/Users/Actions";
 
 const uri = `mongodb+srv://${dbUserName}:${dbPassword}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
@@ -83,6 +84,11 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // Users
+app.get("/users/getAll", async (req, res) => {
+  const users = await getAllUsers(client);
+  res.send(users);
+});
+
 app.post("/users/add", async (req, res) => {
   const user = req.body;
   const result = await addUser(client, user);

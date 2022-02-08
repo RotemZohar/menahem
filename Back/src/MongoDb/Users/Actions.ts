@@ -61,3 +61,17 @@ export async function validateUser(client: MongoClient, user: any) {
     return "";
   }
 }
+
+export async function getAllUsers(client: MongoClient) {
+  try {
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .find()
+      .toArray();
+    return result;
+  } catch (e) {
+    console.error(e);
+    return "";
+  }
+}
