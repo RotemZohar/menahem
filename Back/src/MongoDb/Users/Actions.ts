@@ -62,7 +62,7 @@ export async function validateUser(client: MongoClient, user: any) {
   }
 }
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (client: MongoClient) => {
   try {
     await client.connect();
     return await client
@@ -75,7 +75,11 @@ export const getAllUsers = async () => {
   }
 };
 
-export const setUserConnected = async (email: string, isConnected = true) => {
+export const setUserConnected = async (
+  client: MongoClient,
+  email: string,
+  isConnected = true
+) => {
   try {
     await client.connect();
 
