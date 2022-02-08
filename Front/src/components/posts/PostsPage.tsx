@@ -16,10 +16,10 @@ function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const tag = useSelector((state: RootState) => state.userReducer.tag);
 
-  if (!tag) {
+  if (tag) {
 
     useEffect(() => {
-      fetch(`http://localhost:4000/posts/byTag/Gaming`, {
+      fetch(`http://localhost:4000/posts/byTag/${tag}`, {
         method: "GET",
       }).then((res) => {
         res.json().then((data) => setPosts(data));
