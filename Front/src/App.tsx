@@ -6,6 +6,8 @@ import SingupPage from "./components/sign-up/SignupPage";
 import EditDetailsPage from "./components/edit-details/EditDetails";
 import LandingPage from "./components/landing-page/LandingPage";
 import { useAppSelector } from "./redux/store";
+import AdminPage from "./components/admin-page/AdminPage";
+import PostsPage from "./components/posts/PostsPage";
 
 const socket = socketClient("http://localhost:4000");
 
@@ -28,7 +30,9 @@ const App = () => {
       <Routes>
         <Route path="" element={<LandingPage />} />
         <Route path="signup" element={<SingupPage />} />
+        <Route path="posts" element={<PostsPage />} />
         <Route path="editDetails" element={<EditDetailsPage />} />
+        <Route path="admin" element={<AdminPage />} />
       </Routes>
     </div>
   );

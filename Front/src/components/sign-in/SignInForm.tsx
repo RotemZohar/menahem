@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function SignInForm() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [user, setUser] = useState({ email: "", password: "" });
   const [passwordInput, setPasswordInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const navigate = useNavigate();
@@ -19,20 +18,30 @@ function SignInForm() {
   const handleSubmit = (e: any) => {
     setError(false);
     e.preventDefault();
+
+    const userDetails = {
+      email: emailInput,
+      password: passwordInput,
+    };
     if (!emailInput || !passwordInput) {
       showError("Please insert all fields!");
     } else {
-      fetch(`http://localhost:4000/users/get/${emailInput}`, {
-        method: "GET",
-      })
+      // fetch(`http://localhost:4000/users/validateUser`, {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     params: { email: emailInput, password: passwordInput },
+      //   }),
+      // }
+      axios
+        .get("http://localhost:4000/users/validateUser", {
+          params: {
+            user: userDetails,
+          },
+        })
         .then((res) => {
-          res.json().then((data) => setUser(data));
-          if (user.password === passwordInput) {
-            navigator.sendBeacon(
-              `http://localhost:4000/users/connected/${user.email}`
-            );
-            navigate("/home");
-          } else {
+          console.log(res);
+          if (res.data !== "") navigate("/home");
+          else {
             showError("Your email or password is incorrect.");
           }
         })

@@ -1,5 +1,8 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
 import React, { useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 // import { useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
@@ -8,7 +11,34 @@ import React, { useState } from "react";
 const EditDetailsPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [openSnack, setSnackOpen] = React.useState(false);
   let passNotMatchText = "";
+
+  const handleSnackClick = () => {
+    setSnackOpen(true);
+  };
+
+  const handleSnackClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleSnackClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   const checkPasswordsMatch = () => {
     if (password === confirmPassword) {
@@ -23,24 +53,26 @@ const EditDetailsPage = () => {
   };
   const onSubmit = (e: any) => {
     e.preventDefault();
+    if (checkPasswordsMatch() === true) {
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: confirmPassword }),
+      };
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password: confirmPassword }),
-    };
-
-    fetch(
-      `http://localhost:4000/users/changePass/61fd079f8855b4c80123094c`,
-      requestOptions
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      fetch(
+        `http://localhost:4000/users/changePass/61fd079f8855b4c80123094c`,
+        requestOptions
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          handleSnackClick();
+          console.log(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   return (
@@ -70,6 +102,13 @@ const EditDetailsPage = () => {
           <Button variant="contained" type="submit">
             Submit
           </Button>
+          <Snackbar
+            open={openSnack}
+            autoHideDuration={3000}
+            message="Details changed"
+            onClose={handleSnackClose}
+            action={action}
+          />
         </Grid>
       </Grid>
     </Box>

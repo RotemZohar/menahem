@@ -1,9 +1,10 @@
 import cors from "cors";
 import http from "http";
 import express from "express";
-import { ObjectId } from "mongodb";
 import socketIo, { Socket as BaseSocket } from "socket.io";
-import { getAllHobbies, getHobbie } from "./MongoDb/Hobbies/Actions";
+import { MongoClient, ObjectId } from "mongodb";
+import { getAllHobbies, getHobby } from "./MongoDb/Hobbies/Actions";
+import { menahemDbName, dbUserName, dbPassword } from "./MongoDb/consts";
 import {
   getPostByTag,
   addPost,
@@ -14,9 +15,19 @@ import {
   addUser,
   getUser,
   editUserPassword,
+  validateUser,
   getAllUsers,
   setUserConnected,
 } from "./MongoDb/Users/Actions";
+
+const uri = `mongodb+srv://${dbUserName}:${dbPassword}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+
+const connectClient = async (mongoClient: MongoClient) => {
+  await mongoClient.connect();
+};
+
+connectClient(client);
 
 const app = express();
 const port = 4000;
@@ -27,18 +38,18 @@ app.use(express.json());
 
 // Hobbies
 app.get("/hobbies/getAll", async (req, res) => {
-  const hobbies = await getAllHobbies();
+  const hobbies = await getAllHobbies(client);
   res.send(hobbies);
 });
 
 app.get("/hobbies/:id", async (req, res) => {
-  const hobbie = await getHobbie(req.params.id);
-  res.send(hobbie);
+  const hobby = await getHobby(client, req.params.id);
+  res.send(hobby);
 });
 
 // Posts
 app.get("/posts/byTag/:tag", async (req, res) => {
-  const posts = await getPostByTag(req.params.tag);
+  const posts = await getPostByTag(client, req.params.tag);
   if (posts) {
     res.send(posts);
   } else {
@@ -48,7 +59,7 @@ app.get("/posts/byTag/:tag", async (req, res) => {
 
 app.post("/posts/add", async (req, res) => {
   const post = req.body;
-  const result = await addPost(post);
+  const result = await addPost(client, post);
   if (result) {
     res.send(result);
   } else {
@@ -58,7 +69,7 @@ app.post("/posts/add", async (req, res) => {
 
 app.put("/posts/:id", async (req, res) => {
   const post = req.body;
-  const result = await editPost(new ObjectId(req.params.id), post);
+  const result = await editPost(client, new ObjectId(req.params.id), post);
   if (result) {
     res.send(result);
   } else {
@@ -67,7 +78,7 @@ app.put("/posts/:id", async (req, res) => {
 });
 
 app.delete("/posts/:id", async (req, res) => {
-  const result = await deletePost(new ObjectId(req.params.id));
+  const result = await deletePost(client, new ObjectId(req.params.id));
   if (result) {
     res.send("Deletion succeeded");
   } else {
@@ -84,7 +95,7 @@ app.get("/users", async (req, res) => {
 
 app.post("/users/add", async (req, res) => {
   const user = req.body;
-  const result = await addUser(user);
+  const result = await addUser(client, user);
   if (result) {
     res.send(user.email);
   } else {
@@ -93,13 +104,24 @@ app.post("/users/add", async (req, res) => {
 });
 
 app.get("/users/get/:email", async (req, res) => {
-  const user = await getUser(req.params.email);
+  const user = await getUser(client, req.params.email);
+  res.send(user);
+});
+
+app.get("/users/validateUser", async (req, res) => {
+  const userDetails = req.query.user;
+
+  const user = await validateUser(client, userDetails);
   res.send(user);
 });
 
 app.put("/users/changePass/:id", async (req, res) => {
   const { password } = req.body;
-  const result = await editUserPassword(new ObjectId(req.params.id), password);
+  const result = await editUserPassword(
+    client,
+    new ObjectId(req.params.id),
+    password
+  );
   if (result) {
     res.send(result);
   } else {
