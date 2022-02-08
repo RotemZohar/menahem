@@ -12,7 +12,7 @@ import {
 import {
   addUser,
   getUser,
-  editUserPassword,
+  updateUserDetails,
   validateUser,
 } from "./MongoDb/Users/Actions";
 
@@ -120,12 +120,13 @@ app.get("/users/validateUser", async (req, res, next) => {
   }
 });
 
-app.put("/users/changePass/:id", async (req, res, next) => {
+app.put("/users/updateDetails/:id", async (req, res, next) => {
   try {
-    const { password } = req.body;
-    const result = await editUserPassword(
+    const { name, password } = req.body;
+    const result = await updateUserDetails(
       client,
       new ObjectId(req.params.id),
+      name,
       password
     );
     res.send(result);

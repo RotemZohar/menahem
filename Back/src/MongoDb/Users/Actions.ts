@@ -27,16 +27,25 @@ export async function getUser(client: MongoClient, email: string) {
   }
 }
 
-export async function editUserPassword(
+export async function updateUserDetails(
   client: MongoClient,
   _id: ObjectId,
-  new_password: string
+  name: string,
+  password: string
 ) {
   try {
-    const result = await client
-      .db(menahemDbName)
-      .collection(usersCollectionName)
-      .updateOne({ _id: { $eq: _id } }, { $set: { password: new_password } });
+    let result;
+    if (password) {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name, password } });
+    } else {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name } });
+    }
     return result;
   } catch (e) {
     console.error(e);
