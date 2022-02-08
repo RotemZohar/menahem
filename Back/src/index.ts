@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
-import { getAllHobbies, getHobbie } from "./MongoDb/Hobbies/Actions";
+import { getAllHobbies, getHobby } from "./MongoDb/Hobbies/Actions";
 import { menahemDbName, dbUserName, dbPassword } from "./MongoDb/consts";
 import {
   getPostByTag,
@@ -9,7 +9,12 @@ import {
   editPost,
   deletePost,
 } from "./MongoDb/Posts/Actions";
-import { addUser, getUser, editUserPassword } from "./MongoDb/Users/Actions";
+import {
+  addUser,
+  getUser,
+  editUserPassword,
+  validateUser,
+} from "./MongoDb/Users/Actions";
 
 const uri = `mongodb+srv://${dbUserName}:${dbPassword}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -34,8 +39,8 @@ app.get("/hobbies/getAll", async (req, res) => {
 });
 
 app.get("/hobbies/:id", async (req, res) => {
-  const hobbie = await getHobbie(client, req.params.id);
-  res.send(hobbie);
+  const hobby = await getHobby(client, req.params.id);
+  res.send(hobby);
 });
 
 // Posts
@@ -90,6 +95,13 @@ app.post("/users/add", async (req, res) => {
 
 app.get("/users/get/:email", async (req, res) => {
   const user = await getUser(client, req.params.email);
+  res.send(user);
+});
+
+app.get("/users/validateUser", async (req, res) => {
+  const userDetails = req.query.user;
+
+  const user = await validateUser(client, userDetails);
   res.send(user);
 });
 

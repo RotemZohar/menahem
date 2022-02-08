@@ -15,7 +15,7 @@ export async function getAllHobbies(client: MongoClient) {
   }
 }
 
-export async function getHobbie(client: MongoClient, _id: string) {
+export async function getHobby(client: MongoClient, _id: string) {
   try {
     const query = { _id: { $eq: _id } };
     // Connect to the MongoDB cluster
