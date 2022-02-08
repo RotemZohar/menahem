@@ -1,5 +1,7 @@
 import cors from "cors";
+import http from "http";
 import express from "express";
+import socketIo, { Socket as BaseSocket } from "socket.io";
 import { MongoClient, ObjectId } from "mongodb";
 import { getAllHobbies, getHobby } from "./MongoDb/Hobbies/Actions";
 import { menahemDbName, dbUserName, dbPassword } from "./MongoDb/consts";
@@ -14,6 +16,8 @@ import {
   getUser,
   editUserPassword,
   validateUser,
+  getAllUsers,
+  setUserConnected,
 } from "./MongoDb/Users/Actions";
 
 const uri = `mongodb+srv://${dbUserName}:${dbPassword}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
@@ -83,6 +87,12 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // Users
+
+app.get("/users", async (req, res) => {
+  const user = await getAllUsers();
+  res.json(user);
+});
+
 app.post("/users/add", async (req, res) => {
   const user = req.body;
   const result = await addUser(client, user);
@@ -119,6 +129,39 @@ app.put("/users/changePass/:id", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+const server = http.createServer(app);
+
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
+});
+
+// socket.io
+
+const io = new socketIo.Server(server, {
+  cors: { origin: "*" },
+});
+
+interface Socket extends BaseSocket {
+  email: string;
+}
+
+io.on("connection", (param) => {
+  const socket = param as Socket;
+
+  socket.on("sign-in", async (email) => {
+    socket.email = email;
+    await setUserConnected(email);
+  });
+
+  socket.on("sign-out", async () => {
+    if (socket.email) {
+      await setUserConnected(socket.email, false);
+    }
+  });
+
+  socket.on("disconnect", async () => {
+    if (socket.email) {
+      await setUserConnected(socket.email, false);
+    }
+  });
 });
