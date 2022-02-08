@@ -16,22 +16,25 @@ function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const tag = useSelector((state: RootState) => state.userReducer.hobbyId);
 
-  if (tag) {
-    useEffect(() => {
+  useEffect(() => {
+    if (tag) {
       fetch(`http://localhost:4000/posts/byTag/${tag}`, {
         method: "GET",
       }).then((res) => {
         res.json().then((data) => setPosts(data));
       });
-    }, []);
+    }
+  }, [tag]);
 
-    const list = useMemo(
-      () =>
-        posts.map((post) => (
-          <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text} />
-        )),
-      [posts]
-    );
+  const list = useMemo(
+    () =>
+      posts?.map((post) => (
+        <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text} />
+      )),
+    [posts]
+  );
+
+  if (tag) {
     return (
       <Box
         sx={{

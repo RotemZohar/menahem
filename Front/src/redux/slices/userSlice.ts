@@ -17,15 +17,16 @@ export const userSlice = createSlice({
     setUserEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setTag: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+    setHobbyId: (state, action: PayloadAction<string>) => {
+      state.hobbyId = action.payload;
     },
-    setUser: (state, action: PayloadAction<UserState>) => {
-      state = action.payload;
-    },
+    setUser: (state, action: PayloadAction<UserState>) => ({
+      email: action.payload.email,
+      hobbyId: action.payload.hobbyId,
+    }),
   },
 });
 
-export const { setUserEmail, setTag, setUser } = userSlice.actions;
+export const { setUserEmail, setHobbyId, setUser } = userSlice.actions;
 
 export default userSlice.reducer;
