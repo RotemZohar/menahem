@@ -89,7 +89,7 @@ app.delete("/posts/:id", async (req, res) => {
 // Users
 
 app.get("/users", async (req, res) => {
-  const user = await getAllUsers();
+  const user = await getAllUsers(client);
   res.json(user);
 });
 
@@ -150,18 +150,18 @@ io.on("connection", (param) => {
 
   socket.on("sign-in", async (email) => {
     socket.email = email;
-    await setUserConnected(email);
+    await setUserConnected(client, email);
   });
 
   socket.on("sign-out", async () => {
     if (socket.email) {
-      await setUserConnected(socket.email, false);
+      await setUserConnected(client, socket.email, false);
     }
   });
 
   socket.on("disconnect", async () => {
     if (socket.email) {
-      await setUserConnected(socket.email, false);
+      await setUserConnected(client, socket.email, false);
     }
   });
 });
