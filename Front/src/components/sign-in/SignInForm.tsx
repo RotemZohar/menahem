@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
 
 function SignInForm() {
   const [error, setError] = useState(false);
@@ -10,6 +12,7 @@ function SignInForm() {
   const [emailInput, setEmailInput] = useState("");
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   function showError(message: string) {
     setError(true);
     setErrorMessage(message);
@@ -38,10 +41,12 @@ function SignInForm() {
             user: userDetails,
           },
         })
-        .then((res) => {
+        .then((res: any) => {
           console.log(res);
-          if (res.data !== "") navigate("/home");
-          else {
+          if (res.data !== "") {
+            dispatch(setUser(res.data));
+            navigate("/posts");
+          } else {
             showError("Your email or password is incorrect.");
           }
         })
