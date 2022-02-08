@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserState {
   email: string;
-  tag: string;
+  hobbyId: string;
 }
 
 const initialState: UserState = {
   email: "",
-  tag: "",
+  hobbyId: "",
 };
 
 export const userSlice = createSlice({
@@ -17,12 +17,16 @@ export const userSlice = createSlice({
     setUserEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
-    setTag: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+    setHobbyId: (state, action: PayloadAction<string>) => {
+      state.hobbyId = action.payload;
     },
+    setUser: (state, action: PayloadAction<UserState>) => ({
+      email: action.payload.email,
+      hobbyId: action.payload.hobbyId,
+    }),
   },
 });
 
-export const { setUserEmail, setTag } = userSlice.actions;
+export const { setUserEmail, setHobbyId, setUser } = userSlice.actions;
 
 export default userSlice.reducer;
