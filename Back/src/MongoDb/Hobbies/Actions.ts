@@ -11,7 +11,7 @@ export async function getAllHobbies(client: MongoClient) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -27,6 +27,6 @@ export async function getHobby(client: MongoClient, _id: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }

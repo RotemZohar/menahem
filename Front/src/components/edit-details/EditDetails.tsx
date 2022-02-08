@@ -70,7 +70,7 @@ const EditDetailsPage = () => {
           console.log(data);
         })
         .catch((err) => {
-          console.error(err);
+          console.log(err);
         });
     }
   };

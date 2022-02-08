@@ -7,7 +7,6 @@ export async function addUser(client: MongoClient, user: any) {
       .db(menahemDbName)
       .collection(usersCollectionName)
       .insertOne(user);
-    console.log(result.insertedId);
     return result.insertedId;
   } catch (e) {
     console.error(e);
@@ -24,7 +23,7 @@ export async function getUser(client: MongoClient, email: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -41,7 +40,7 @@ export async function editUserPassword(
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -58,6 +57,6 @@ export async function validateUser(client: MongoClient, user: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }

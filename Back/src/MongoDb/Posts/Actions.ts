@@ -11,7 +11,7 @@ export async function getAllPosts(client: MongoClient) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -27,7 +27,7 @@ export async function getPostByTag(client: MongoClient, tag: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -40,7 +40,7 @@ export async function addPost(client: MongoClient, post: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -63,7 +63,7 @@ export async function editPost(client: MongoClient, _id: ObjectId, post: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -76,6 +76,6 @@ export async function deletePost(client: MongoClient, _id: ObjectId) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
