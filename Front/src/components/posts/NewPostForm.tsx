@@ -1,42 +1,28 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Box, TextField, Grid, Typography, Button } from "@mui/material";
 
 const NewPostForm = () => {
     const [title, setTitle] = useState("");
     const [tag, setTag] = useState("");
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    // const [description, setDescription] = useState("");
+    const [text, setText] = useState("");
     // const [imgUrl, setImgUrl] = useState("");
 
     const onSubmit = (e: any) => {
         e.preventDefault();
-        if (!title || !tag) {
-            alert("Please insert all fields!");
-        } else {
-            fetch("http://localhost:4000/posts/add", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title,
-                    tag,
-                }),
-            })
-                .then((res) => {
-                    if (res.body) {
-                        res.json().then((data) => dispatch(setTag(data.tag)));
-                        navigate("/admin");
-                    }
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        }
+        fetch("http://localhost:4000/posts/add", {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                title,
+                tag,
+                text,
+            }),
+        }).catch((err) => {
+            console.error(err);
+        });
     };
 
     return (
@@ -47,6 +33,7 @@ const NewPostForm = () => {
             <Grid container direction="column">
                 <Grid item margin={1} xs={12}>
                     <TextField
+                        required
                         label="Title"
                         type="text"
                         value={title}
@@ -55,21 +42,22 @@ const NewPostForm = () => {
                 </Grid>
                 <Grid item margin={1} xs={12}>
                     <TextField
+                        required
                         label="Tag"
                         type="text"
                         value={tag}
                         onChange={(e) => setTag(e.target.value)}
                     />
                 </Grid>
-                {/* <Grid item margin={1} xs={12}>
+                <Grid item margin={1} xs={12}>
                     <TextField
                         label="Description"
                         type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
                     />
                 </Grid>
-                <Grid item margin={1} xs={12}>
+                {/* <Grid item margin={1} xs={12}>
                     <TextField
                         label="ImgUrl"
                         type="url"
@@ -78,7 +66,9 @@ const NewPostForm = () => {
                     />
                 </Grid> */}
                 <Grid item margin={1} xs={12}>
-                    <Button type="submit">Add post</Button>
+                    <Button variant="contained" type="submit">
+                        Add post
+                    </Button>
                 </Grid>
             </Grid>
         </Box>
