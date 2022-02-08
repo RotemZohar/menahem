@@ -5,6 +5,7 @@ import PostsPage from "./components/posts/PostsPage";
 import SingupPage from "./components/sign-up/SignupPage";
 import EditDetailsPage from "./components/edit-details/EditDetails";
 import LandingPage from "./components/landing-page/LandingPage";
+import AdminPage from "./components/admin-page/AdminPage";
 
 const App = () => (
   <div className="App">
@@ -13,6 +14,7 @@ const App = () => (
       <Route path="signup" element={<SingupPage />} />
       <Route path="posts" element={<PostsPage />} />
       <Route path="editDetails" element={<EditDetailsPage />} />
+      <Route path="admin" element={<AdminPage />} />
     </Routes>
   </div>
 );
