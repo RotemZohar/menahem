@@ -14,56 +14,59 @@ interface Post {
 
 function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const tag = useSelector((state: RootState) => state.userReducer.tag);
+  const tag = useSelector((state: RootState) => state.userReducer.hobbyId);
 
-  if (tag) {
-
-    useEffect(() => {
+  useEffect(() => {
+    if (tag) {
       fetch(`http://localhost:4000/posts/byTag/${tag}`, {
         method: "GET",
       }).then((res) => {
         res.json().then((data) => setPosts(data));
       });
-    }, []);
-  
-      const list = useMemo(
-        () =>
-          posts.map((post) => (
-            <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text}/>
-          )),
-        [posts]
-      );
+    }
+  }, [tag]);
+
+  const list = useMemo(
+    () =>
+      posts?.map((post) => (
+        <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text} />
+      )),
+    [posts]
+  );
+
+  if (tag) {
     return (
-      <Box 
-        sx={{ display: 'grid', 
-              gridTemplateRows: 'repeat(3, 1fr)', 
-              p: 1,
-              columnGap: 3,
-              rowGap: 1, 
-              justifyContent: 'center',
-        }}>
-        <div>
-            {list}
-        </div>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>{list}</div>
       </Box>
     );
   }
 
-
   return (
-    <Box 
-      sx={{ display: 'grid', 
-            gridTemplateRows: 'repeat(3, 1fr)', 
-            p: 1,
-            columnGap: 3,
-            rowGap: 1, 
-            justifyContent: 'center',
-      }}>
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateRows: "repeat(3, 1fr)",
+        p: 1,
+        columnGap: 3,
+        rowGap: 1,
+        justifyContent: "center",
+      }}
+    >
       <div>
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>
-            Hobby not found.
-          </Alert>
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Hobby not found.
+        </Alert>
       </div>
     </Box>
   );
