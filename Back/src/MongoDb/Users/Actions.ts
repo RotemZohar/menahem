@@ -61,3 +61,29 @@ export async function validateUser(client: MongoClient, user: any) {
     return "";
   }
 }
+
+export const getAllUsers = async () => {
+  try {
+    await client.connect();
+    return await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .find()
+      .toArray();
+  } finally {
+    await client.close();
+  }
+};
+
+export const setUserConnected = async (email: string, isConnected = true) => {
+  try {
+    await client.connect();
+
+    await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .updateOne({ email }, { $set: { isConnected } });
+  } finally {
+    await client.close();
+  }
+};
