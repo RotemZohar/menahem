@@ -84,9 +84,13 @@ app.delete("/posts/:id", async (req, res) => {
 });
 
 // Users
-app.get("/users/getAll", async (req, res) => {
-  const users = await getAllUsers(client);
-  res.send(users);
+app.get("/users/getAll", async (req, res, next) => {
+  try {
+    const users = await getAllUsers(client);
+    res.send(users);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.post("/users/add", async (req, res) => {

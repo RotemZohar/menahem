@@ -72,6 +72,6 @@ export async function getAllUsers(client: MongoClient) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
