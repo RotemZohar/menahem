@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
+import PostsTab from "./PostsTab";
 
 function TabPanel(props: { index: number, value: number, children: any }) {
     const { children, value, index, ...other } = props;
@@ -37,7 +38,7 @@ function TabPanel(props: { index: number, value: number, children: any }) {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          Item One
+          <PostsTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two

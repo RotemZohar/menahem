@@ -29,7 +29,7 @@ function PostsPage() {
       const list = useMemo(
         () =>
           posts.map((post) => (
-            <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text}/>
+            <PostCard id={post._id} imgUrl={post.imgUrl} title={post.title} text={post.text}/>
           )),
         [posts]
       );

@@ -7,6 +7,7 @@ import {
   addPost,
   editPost,
   deletePost,
+  getAllPosts,
 } from "./MongoDb/Posts/Actions";
 import { addUser, getUser, editUserPassword } from "./MongoDb/Users/Actions";
 
@@ -29,6 +30,11 @@ app.get("/hobbies/:id", async (req, res) => {
 });
 
 // Posts
+app.get("/posts/getAll", async (req, res) => {
+  const posts = await getAllPosts();
+  res.send(posts);
+});
+
 app.get("/posts/byTag/:tag", async (req, res) => {
   const posts = await getPostByTag(req.params.tag);
   if (posts) {
