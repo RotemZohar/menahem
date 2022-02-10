@@ -18,16 +18,32 @@ function PostCard(props: {
   isAdminUser?: boolean;
   isEdit?: boolean;
 }) {
-  const { id, tag, imgUrl, text, isAdminUser, title } = props;
-  let { isEdit } = props;
-
+  const { id, tag, imgUrl, text, isAdminUser, title, isEdit } = props;
   const [newTitle, setNewTitle] = useState(title);
   const [newText, setNewText] = useState(text);
+  const [editState, setEditState] = useState(isEdit);
 
   const changeEditMode = () => {
-    isEdit = !isEdit;
-    // props.isEdit = isEdit;
-    props.isEdit(console.log("test"), "changeEditMode");
+    // isEdit = !isEdit;
+
+    setEditState(!editState);
+    // editRules();
+  };
+
+  const deletePost = () => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    };
+
+    fetch(`http://localhost:4000/posts/${id}`, requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const updateCard = () => {
@@ -45,79 +61,72 @@ function PostCard(props: {
     fetch(`http://localhost:4000/posts/${id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         changeEditMode();
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  const deletePost = () => {
-    const requestOptions = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    };
-
-    fetch(`http://localhost:4000/posts/${id}`, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  let Actions;
-  if (isAdminUser) {
-    Actions = (
-      <CardActions>
-        <IconButton aria-label="delete" onClick={deletePost}>
-          <DeleteIcon />
-        </IconButton>
-
-        <IconButton aria-label="edit" onClick={changeEditMode}>
-          <EditIcon />
-        </IconButton>
-      </CardActions>
-    );
-  }
 
   let EditableFields;
-  if (!isEdit) {
-    EditableFields = (
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {text}
-        </Typography>
-      </CardContent>
-    );
-  } else {
-    EditableFields = (
-      <CardContent>
-        <TextField
-          value={newTitle}
-          label="Title"
-          type="string"
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-        <TextField
-          value={newText}
-          label="Text"
-          type="string"
-          onChange={(e) => setNewText(e.target.value)}
-        />
+  const editRules = () => {
+    if (!editState) {
+      EditableFields = (
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {text}
+          </Typography>
+        </CardContent>
+      );
+    } else {
+      EditableFields = (
+        <CardContent>
+          <TextField
+            value={newTitle}
+            label="Title"
+            type="string"
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
+          <TextField
+            value={newText}
+            label="Text"
+            type="string"
+            onChange={(e) => setNewText(e.target.value)}
+          />
+          <CardActions>
+            <Button onClick={updateCard} variant="contained" size="small">
+              Update
+            </Button>
+          </CardActions>
+        </CardContent>
+      );
+    }
+  };
+
+  editRules();
+
+  let Actions;
+  const adminRules = () => {
+    if (isAdminUser) {
+      Actions = (
         <CardActions>
-          <Button onClick={updateCard} variant="contained" size="small">
-            Update
-          </Button>
+          <IconButton aria-label="delete" onClick={deletePost}>
+            <DeleteIcon />
+          </IconButton>
+
+          <IconButton aria-label="edit" onClick={changeEditMode}>
+            <EditIcon />
+          </IconButton>
         </CardActions>
-      </CardContent>
-    );
-  }
+      );
+    }
+  };
+
+  adminRules();
 
   return (
     <Card sx={{ maxWidth: 345, marginTop: 5 }}>
