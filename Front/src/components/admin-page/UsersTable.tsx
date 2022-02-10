@@ -45,7 +45,7 @@ export default function UsersTable() {
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.name}</TableCell>
-              <TableCell>{user.connected}</TableCell>
+              <TableCell>{user.connected.toString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>
