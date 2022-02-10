@@ -57,9 +57,13 @@ app.get("/hobbies/:id", async (req, res, next) => {
 });
 
 // Posts
-app.get("/posts/getAll", async (req, res) => {
-  const posts = await getAllPosts();
-  res.send(posts);
+app.get("/posts/getAll", async (req, res, next) => {
+  try {
+    const posts = await getAllPosts(client);
+    res.send(posts);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get("/posts/byTag/:tag", async (req, res, next) => {
@@ -101,6 +105,15 @@ app.delete("/posts/:id", async (req, res, next) => {
 });
 
 // Users
+app.get("/users/getAll", async (req, res, next) => {
+  try {
+    const users = await getAllUsers(client);
+    res.send(users);
+  } catch (e) {
+    next(e);
+  }
+});
+
 app.post("/users/add", async (req, res, next) => {
   try {
     const user = req.body;

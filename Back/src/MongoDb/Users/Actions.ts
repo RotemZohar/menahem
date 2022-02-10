@@ -70,8 +70,19 @@ export async function validateUser(client: MongoClient, user: any) {
   }
 }
 
-export const getAllUsers = (client: MongoClient) =>
-  client.db(menahemDbName).collection(usersCollectionName).find().toArray();
+export async function getAllUsers(client: MongoClient) {
+  try {
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .find()
+      .toArray();
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export const setUserConnected = async (
   client: MongoClient,
