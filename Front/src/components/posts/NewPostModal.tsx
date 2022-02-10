@@ -37,11 +37,9 @@ const NewPostModal = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Container maxWidth="md">
+                <Container>
                     <Card
                         sx={{
-                            width: 500,
-                            minheight: 420,
                             position: "absolute",
                             top: "50%",
                             left: "50%",
@@ -49,7 +47,7 @@ const NewPostModal = () => {
                         }}
                     >
                         <CardContent>
-                            <NewPostForm />
+                            <NewPostForm handleClose={handleClose} />
                         </CardContent>
                     </Card>
                 </Container>
