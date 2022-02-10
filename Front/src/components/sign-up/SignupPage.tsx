@@ -12,7 +12,6 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setTag } from "../../redux/slices/userSlice";
 
 interface Hobby {
   name: string;
@@ -23,7 +22,7 @@ const SingupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [hobbyId, setHobbyId] = useState("");
+  const [currHobbyId, setCurrHobbyId] = useState("");
   const [hobbies, setHobbies] = useState<Hobby[]>([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -50,7 +49,7 @@ const SingupPage = () => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    if (!email || !password || !hobbyId || !name) {
+    if (!email || !password || !currHobbyId || !name) {
       alert("Please insert all fields!");
     } else {
       fetch("http://localhost:4000/users/add", {
@@ -63,13 +62,13 @@ const SingupPage = () => {
           email,
           password,
           name,
-          hobbyId,
+          hobbyId: currHobbyId,
         }),
       })
         .then((res) => {
           if (res.body) {
-            res.json().then((data) => dispatch(setTag(data.tag)));
-            navigate("/home");
+            res.json().then((data) => dispatch(setCurrHobbyId(data.tag)));
+            navigate("/");
           }
         })
         .catch((err) => {
@@ -79,7 +78,7 @@ const SingupPage = () => {
   };
 
   const handleChange = (event: SelectChangeEvent) => {
-    setHobbyId(event.target.value);
+    setCurrHobbyId(event.target.value);
   };
 
   return (
@@ -114,7 +113,12 @@ const SingupPage = () => {
         <Grid item margin={1}>
           <FormControl sx={{ m: 1, minWidth: 225 }}>
             <InputLabel>Hobby</InputLabel>
-            <Select value={hobbyId} onChange={handleChange} autoWidth required>
+            <Select
+              value={currHobbyId}
+              onChange={handleChange}
+              autoWidth
+              required
+            >
               {list}
             </Select>
           </FormControl>

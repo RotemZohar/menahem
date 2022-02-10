@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
 
 function SignInForm() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [user, setUser] = useState({ email: "", password: "" });
   const [passwordInput, setPasswordInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   function showError(message: string) {
     setError(true);
     setErrorMessage(message);
@@ -19,16 +21,31 @@ function SignInForm() {
   const handleSubmit = (e: any) => {
     setError(false);
     e.preventDefault();
+
+    const userDetails = {
+      email: emailInput,
+      password: passwordInput,
+    };
     if (!emailInput || !passwordInput) {
       showError("Please insert all fields!");
     } else {
-      fetch(`http://localhost:4000/users/get${emailInput}`, {
-        method: "GET",
-      })
-        .then((res) => {
-          res.json().then((data) => setUser(data));
-          if (user.password === passwordInput) {
-            navigate("/home");
+      // fetch(`http://localhost:4000/users/validateUser`, {
+      //   method: "POST",
+      //   body: JSON.stringify({
+      //     params: { email: emailInput, password: passwordInput },
+      //   }),
+      // }
+      axios
+        .get("http://localhost:4000/users/validateUser", {
+          params: {
+            user: userDetails,
+          },
+        })
+        .then((res: any) => {
+          console.log(res);
+          if (res.data !== "") {
+            dispatch(setUser(res.data));
+            navigate("/posts");
           } else {
             showError("Your email or password is incorrect.");
           }

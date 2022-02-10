@@ -1,19 +1,8 @@
 import { MongoClient } from "mongodb";
-import {
-  menahemDbName,
-  userName,
-  password,
-  hobbiesCollectionName,
-} from "../consts";
+import { menahemDbName, hobbiesCollectionName } from "../consts";
 
-
-const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
-
-export async function getAllHobbies() {
+export async function getAllHobbies(client: MongoClient) {
   try {
-    // Connect to the MongoDB cluster
-    await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(hobbiesCollectionName)
@@ -22,26 +11,22 @@ export async function getAllHobbies() {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
-  } finally {
-    await client.close();
+    throw e;
   }
 }
 
-export async function getHobbie(_id: string) {
+export async function getHobby(client: MongoClient, _id: string) {
   try {
-    const query = { "_id": { "$eq":  _id} };
+    const query = { _id: { $eq: _id } };
     // Connect to the MongoDB cluster
-    await client.connect();
+    // await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(hobbiesCollectionName)
-      .findOne(query)
+      .findOne(query);
     return result;
   } catch (e) {
     console.error(e);
-    return "";
-  } finally {
-    await client.close();
+    throw e;
   }
 }

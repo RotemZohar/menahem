@@ -1,74 +1,85 @@
 import { MongoClient, ObjectId } from "mongodb";
-import {
-    menahemDbName,
-    userName,
-    password,
-    usersCollectionName,
-} from "../consts";
+import { menahemDbName, usersCollectionName } from "../consts";
 
-const uri = `mongodb+srv://${userName}:${password}@menahem.jjn8m.mongodb.net/${menahemDbName}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
-
-export async function addUser(user: any) {
-    try {
-        // const userRom = {
-        //   email: "RomORm@ROmfdf",
-        //   password: "fdfdf",
-        //   hobby: "gaming",
-        // };
-        // Connect to the MongoDB cluster
-        await client.connect();
-        const result = await client
-            .db(menahemDbName)
-            .collection(usersCollectionName)
-            .insertOne(user);
-        console.log(result.insertedId);
-        return result.insertedId;
-    } catch (e) {
-        console.error(e);
-        throw e;
-    } finally {
-        await client.close();
-    }
+export async function addUser(client: MongoClient, user: any) {
+  try {
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .insertOne(user);
+    return result.insertedId;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
 
-export async function getUser(email: string) {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        const result = await client
-            .db(menahemDbName)
-            .collection(usersCollectionName)
-            .findOne({
-                email: { $eq: email },
-            });
-        return result;
-    } catch (e) {
-        console.error(e);
-        return "";
-    } finally {
-        await client.close();
-    }
+export async function getUser(client: MongoClient, email: string) {
+  try {
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .findOne({ email: { $eq: email } });
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
 
-export async function editUserPassword(_id: ObjectId, new_password: string) {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        const result = await client
-            .db(menahemDbName)
-            .collection(usersCollectionName)
-            .updateOne(
-                { _id: { $eq: _id } },
-                {
-                    $set: { password: new_password },
-                }
-            );
-        return result;
-    } catch (e) {
-        console.error(e);
-        return "";
-    } finally {
-        await client.close();
+export async function updateUserDetails(
+  client: MongoClient,
+  _id: ObjectId,
+  name: string,
+  password: string
+) {
+  try {
+    let result;
+    if (password) {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name, password } });
+    } else {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name } });
     }
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
+
+export async function validateUser(client: MongoClient, user: any) {
+  try {
+    const jsonUser = JSON.parse(user);
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .findOne({
+        email: { $eq: jsonUser.email },
+        password: { $eq: jsonUser.password },
+      });
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+export const getAllUsers = (client: MongoClient) =>
+  client.db(menahemDbName).collection(usersCollectionName).find().toArray();
+
+export const setUserConnected = async (
+  client: MongoClient,
+  email: string,
+  isConnected = true
+) => {
+  await client
+    .db(menahemDbName)
+    .collection(usersCollectionName)
+    .updateOne({ email }, { $set: { isConnected } });
+};
