@@ -24,10 +24,7 @@ function PostCard(props: {
   const [editState, setEditState] = useState(isEdit);
 
   const changeEditMode = () => {
-    // isEdit = !isEdit;
-
     setEditState(!editState);
-    // editRules();
   };
 
   const deletePost = () => {
@@ -40,6 +37,7 @@ function PostCard(props: {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        window.location.reload();
       })
       .catch((err) => {
         console.error(err);
@@ -62,6 +60,7 @@ function PostCard(props: {
       .then((res) => res.json())
       .then((data) => {
         changeEditMode();
+        window.location.reload();
         console.log(data);
       })
       .catch((err) => {
