@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, TextField } from "@mui/material";
+import { UPDATE_POST, DELETE_POST } from "../../consts/actions";
 
 function PostCard(props: {
   id: string;
@@ -17,8 +18,10 @@ function PostCard(props: {
   tag: string;
   isAdminUser?: boolean;
   isEdit?: boolean;
+  parentCallback: any;
 }) {
-  const { id, tag, imgUrl, text, isAdminUser, title, isEdit } = props;
+  const { id, tag, imgUrl, text, isAdminUser, title, isEdit, parentCallback } =
+    props;
   const [newTitle, setNewTitle] = useState(title);
   const [newText, setNewText] = useState(text);
   const [editState, setEditState] = useState(isEdit);
@@ -28,44 +31,33 @@ function PostCard(props: {
   };
 
   const deletePost = () => {
-    const requestOptions = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    };
+    parentCallback(id, DELETE_POST);
+    // const requestOptions = {
+    //   method: "DELETE",
+    //   headers: { "Content-Type": "application/json" },
+    // };
 
-    fetch(`http://localhost:4000/posts/${id}`, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // fetch(`http://localhost:4000/posts/${id}`, requestOptions)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     window.location.reload();
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
   };
 
   const updateCard = () => {
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: newTitle,
-        Image: imgUrl,
-        text: newText,
-        tag,
-      }),
+    const postInfo = {
+      _id: id,
+      title: newTitle,
+      Image: imgUrl,
+      text: newText,
+      tag,
     };
-
-    fetch(`http://localhost:4000/posts/${id}`, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        changeEditMode();
-        window.location.reload();
-        console.log(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    parentCallback(postInfo, UPDATE_POST);
+    changeEditMode();
   };
 
   let EditableFields;

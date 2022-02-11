@@ -26,10 +26,14 @@ function PostsPage() {
     }
   }, [tag]);
 
+  const handleCallback = () => {
+    console.log("test");
+  };
   const list = useMemo(
     () =>
       posts?.map((post) => (
         <PostCard
+          parentCallback={handleCallback}
           id={post._id}
           imgUrl={post.imgUrl}
           title={post.title}
