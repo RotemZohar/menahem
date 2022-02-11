@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
-// import { useDispatch } from "react-redux";
 import PostCard from "../posts/PostCard";
 import { UPDATE_POST, DELETE_POST } from "../../consts/actions";
 
@@ -13,10 +12,7 @@ interface Post {
 }
 
 function PostsTab() {
-  // const [posts, setPosts] = useState<Post[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
-
-  // const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`http://localhost:4000/posts/getAll`, {
@@ -24,7 +20,6 @@ function PostsTab() {
     }).then((res) => {
       res.json().then((data) => {
         console.log(data);
-        // dispatch(setPosts(data));
         setPosts(data);
       });
     });

@@ -32,20 +32,6 @@ function PostCard(props: {
 
   const deletePost = () => {
     parentCallback(id, DELETE_POST);
-    // const requestOptions = {
-    //   method: "DELETE",
-    //   headers: { "Content-Type": "application/json" },
-    // };
-
-    // fetch(`http://localhost:4000/posts/${id}`, requestOptions)
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
   };
 
   const updateCard = () => {
