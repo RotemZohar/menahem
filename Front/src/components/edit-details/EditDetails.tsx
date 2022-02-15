@@ -4,11 +4,8 @@ import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-// import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import { setTag } from "../../redux/slices/userSlice";
-
 const EditDetailsPage = () => {
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [openSnack, setSnackOpen] = React.useState(false);
@@ -57,20 +54,19 @@ const EditDetailsPage = () => {
       const requestOptions = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: confirmPassword }),
+        body: JSON.stringify({ name, password: confirmPassword }),
       };
 
       fetch(
-        `http://localhost:4000/users/changePass/61fd079f8855b4c80123094c`,
+        `http://localhost:4000/users/updateDetails/61fd079f8855b4c80123094c`,
         requestOptions
       )
         .then((res) => res.json())
-        .then((data) => {
+        .then(() => {
           handleSnackClick();
-          console.log(data);
         })
         .catch((err) => {
-          console.error(err);
+          console.log(err);
         });
     }
   };
@@ -81,6 +77,14 @@ const EditDetailsPage = () => {
         <Grid item margin={1} xs={12}>
           <TextField
             required
+            value={name}
+            label="Name"
+            type="string"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Grid>
+        <Grid item margin={1} xs={12}>
+          <TextField
             value={password}
             label="Password"
             type="password"
@@ -89,7 +93,6 @@ const EditDetailsPage = () => {
         </Grid>
         <Grid item margin={1} xs={12}>
           <TextField
-            required
             value={confirmPassword}
             label="Confirm password"
             type="password"
