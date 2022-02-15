@@ -69,12 +69,15 @@ const SingupPage = () => {
       })
         .then((res) => {
           if (res.body) {
-            console.log(res.body);
-            res.json().then((data) => {
-              console.log(data);
-              dispatch(setHobbyId(currHobbyId));
-            });
-            navigate("/");
+            if (res.status === 500) {
+              alert("Email already exists!");
+            } else {
+              res.json().then((data) => {
+                console.log(data);
+                dispatch(setHobbyId(currHobbyId));
+              });
+              navigate("/");
+            }
           }
         })
         .catch((err) => {

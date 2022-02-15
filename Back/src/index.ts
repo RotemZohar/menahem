@@ -120,6 +120,7 @@ app.post("/users/add", async (req, res, next) => {
     const result = await addUser(client, user);
     res.send(result);
   } catch (e) {
+    res.status(500);
     next(e);
   }
 });
