@@ -23,7 +23,7 @@ const NewPostForm = (props: {
 }) => {
     const { handleModalClose, handleSnackbarOpen } = props;
     const [title, setTitle] = useState("");
-    const [currHobbyId, setCurrHobbyId] = useState("");
+    const [tag, setTag] = useState("");
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [text, setText] = useState("");
     // const [imgUrl, setImgUrl] = useState("");
@@ -60,7 +60,7 @@ const NewPostForm = (props: {
             },
             body: JSON.stringify({
                 title,
-                currHobbyId,
+                tag,
                 text,
                 imgUrl,
             }),
@@ -75,7 +75,7 @@ const NewPostForm = (props: {
     };
 
     const handleChange = (event: SelectChangeEvent) => {
-        setCurrHobbyId(event.target.value);
+        setTag(event.target.value);
     };
 
     return (
@@ -97,7 +97,7 @@ const NewPostForm = (props: {
                     <FormControl sx={{ minWidth: 223 }}>
                         <InputLabel>Hobby</InputLabel>
                         <Select
-                            value={currHobbyId}
+                            value={tag}
                             onChange={handleChange}
                             autoWidth
                             required
