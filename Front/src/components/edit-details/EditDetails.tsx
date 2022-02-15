@@ -4,10 +4,6 @@ import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-// import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
-// import { setTag } from "../../redux/slices/userSlice";
-
 const EditDetailsPage = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");

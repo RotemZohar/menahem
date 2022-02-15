@@ -40,7 +40,6 @@ function PostsTab() {
     fetch(`http://localhost:4000/posts/${data._id}`, requestOptions)
       .then((res) => res.json())
       .then((serverData) => {
-        // window.location.reload();
         setPosts((existingItems) => {
           const newPosts = existingItems.map((post) => {
             if (post._id === data._id) {
@@ -75,7 +74,6 @@ function PostsTab() {
             ...existingItems.slice(index + 1),
           ];
         });
-        // window.location.reload();
       })
       .catch((err) => {
         console.error(err);
