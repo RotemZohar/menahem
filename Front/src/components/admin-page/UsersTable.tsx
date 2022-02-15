@@ -1,5 +1,4 @@
-import React from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import {
   TableContainer,
   Paper,
@@ -10,19 +9,20 @@ import {
   TableBody,
 } from "@mui/material";
 
-const users: any[] = [];
-axios.get("http://localhost:4000/users/getAll").then((res) => {
-  res.data.map((user: any) =>
-    users.push({
-      id: user._id,
-      email: user.email,
-      name: user.name,
-      connected: user.isConnected,
-    })
-  );
-});
-
 export default function UsersTable() {
+  const [users, setUsers] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/users/getAll`, {
+      method: "GET",
+    }).then((res) => {
+      res.json().then((data) => {
+        console.log(data);
+        setUsers(data);
+      });
+    });
+  }, []);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -41,11 +41,11 @@ export default function UsersTable() {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {user.id}
+                {user._id}
               </TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.name}</TableCell>
-              <TableCell>{user.connected.toString()}</TableCell>
+              <TableCell>{user.isConnected.toString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>
