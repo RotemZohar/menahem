@@ -64,6 +64,7 @@ const SingupPage = () => {
           password,
           name,
           hobbyId: currHobbyId,
+          isConnected: false,
         }),
       })
         .then((res) => {
