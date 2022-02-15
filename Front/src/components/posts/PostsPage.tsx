@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box } from "@mui/material";
+import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -26,15 +26,27 @@ function PostsPage() {
     }
   }, [tag]);
 
+  const handleCallback = () => {
+    console.log("test");
+  };
+
+  const navToEditDetails = () => {};
   const list = useMemo(
     () =>
       posts?.map((post) => (
-        <PostCard imgUrl={post.imgUrl} title={post.title} text={post.text} />
+        <PostCard
+          parentCallback={handleCallback}
+          id={post._id}
+          imgUrl={post.imgUrl}
+          title={post.title}
+          text={post.text}
+          tag={post.tag}
+        />
       )),
     [posts]
   );
 
-  if (tag) {
+  if (!tag) {
     return (
       <Box
         sx={{
@@ -46,7 +58,34 @@ function PostsPage() {
           justifyContent: "center",
         }}
       >
-        <div>{list}</div>
+        <div>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Hobby not found.
+          </Alert>
+        </div>
+      </Box>
+    );
+  }
+
+  if (!list?.length) {
+    return (
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>
+          <Alert severity="info">
+            <AlertTitle>Error</AlertTitle>
+            No posts found for selected hobby.
+          </Alert>
+        </div>
       </Box>
     );
   }
@@ -62,12 +101,7 @@ function PostsPage() {
         justifyContent: "center",
       }}
     >
-      <div>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          Hobby not found.
-        </Alert>
-      </div>
+      <div>{list}</div>
     </Box>
   );
 }

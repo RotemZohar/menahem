@@ -11,15 +11,13 @@ export async function getAllHobbies(client: MongoClient) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
 export async function getHobby(client: MongoClient, _id: string) {
   try {
     const query = { _id: { $eq: _id } };
-    // Connect to the MongoDB cluster
-    // await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(hobbiesCollectionName)
@@ -27,6 +25,6 @@ export async function getHobby(client: MongoClient, _id: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }

@@ -7,7 +7,6 @@ export async function addUser(client: MongoClient, user: any) {
       .db(menahemDbName)
       .collection(usersCollectionName)
       .insertOne(user);
-    console.log(result.insertedId);
     return result.insertedId;
   } catch (e) {
     console.error(e);
@@ -24,24 +23,33 @@ export async function getUser(client: MongoClient, email: string) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
-export async function editUserPassword(
+export async function updateUserDetails(
   client: MongoClient,
   _id: ObjectId,
-  new_password: string
+  name: string,
+  password: string
 ) {
   try {
-    const result = await client
-      .db(menahemDbName)
-      .collection(usersCollectionName)
-      .updateOne({ _id: { $eq: _id } }, { $set: { password: new_password } });
+    let result;
+    if (password) {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name, password } });
+    } else {
+      result = await client
+        .db(menahemDbName)
+        .collection(usersCollectionName)
+        .updateOne({ _id: { $eq: _id } }, { $set: { name } });
+    }
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
@@ -58,12 +66,23 @@ export async function validateUser(client: MongoClient, user: any) {
     return result;
   } catch (e) {
     console.error(e);
-    return "";
+    throw e;
   }
 }
 
-export const getAllUsers = (client: MongoClient) =>
-  client.db(menahemDbName).collection(usersCollectionName).find().toArray();
+export async function getAllUsers(client: MongoClient) {
+  try {
+    const result = await client
+      .db(menahemDbName)
+      .collection(usersCollectionName)
+      .find()
+      .toArray();
+    return result;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export const setUserConnected = async (
   client: MongoClient,
