@@ -31,7 +31,6 @@ function PostsTab() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title: data.title,
-        Image: data.Image,
         text: data.text,
         tag: data.tag,
       }),

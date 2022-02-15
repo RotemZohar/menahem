@@ -55,7 +55,6 @@ export async function editPost(client: MongoClient, _id: ObjectId, post: any) {
           $set: {
             title: post.title,
             text: post.text,
-            imgUrl: post.imgUrl,
             tag: post.tag,
           },
         }
