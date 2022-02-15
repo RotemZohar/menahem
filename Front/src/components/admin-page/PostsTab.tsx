@@ -79,43 +79,9 @@ function PostsTab() {
   };
 
   const addPost = (data: any) => {
-    // fetch("http://localhost:4000/posts/add", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     title: data.title,
-    //     tag: data.tag,
-    //     text: data.text,
-    //     imgUrl: data.imgUrl,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((serverData) => {
-    //     setPosts((existingItems) => {
-    //       console.log(serverData);
-    //       const newPosts = existingItems;
-    //       data._id = serverData.insertedId;
-    //       newPosts.push(data);
-    //       return newPosts;
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    // const rom = posts;
-    // rom.push(posts[0]);
-    // setPosts(rom);
-    setPosts((existingItems) => {
-      const newPosts = existingItems;
-      newPosts.push(data);
-      return newPosts;
-    });
-
-    console.log(data);
+    const newPosts = [...posts];
+    newPosts.push(data);
+    setPosts(newPosts);
   };
 
   const handleCallback = (data: any, action: any) => {
@@ -156,7 +122,7 @@ function PostsTab() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateRows: "repeat(1, 1fr)",
+        gridTemplateRows: "repeat(3, 1fr)",
         p: 1,
         columnGap: 3,
         rowGap: 1,
