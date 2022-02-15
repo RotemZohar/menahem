@@ -15,7 +15,6 @@ import NewPostForm from "./NewPostForm";
 const NewPostModal = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const message = "Post added";
 
     const handleModalOpen = () => {
         setModalOpen(true);
@@ -94,10 +93,10 @@ const NewPostModal = () => {
             </Modal>
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
+                message="Post added"
                 onClose={handleSnackbarClose}
                 action={action}
-                message={message}
             />
         </div>
     );
