@@ -1,7 +1,9 @@
-import { Alert, AlertTitle, Box } from "@mui/material";
+import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
+
 import PostCard from "./PostCard";
 
 interface Post {
@@ -15,6 +17,7 @@ interface Post {
 function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const tag = useSelector((state: RootState) => state.userReducer.hobbyId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (tag) {
@@ -26,8 +29,10 @@ function PostsPage() {
     }
   }, [tag]);
 
-  const handleCallback = () => {
-    console.log("test");
+  const handleCallback = () => {};
+
+  const navToEditDetails = () => {
+    navigate("../editDetails");
   };
   const list = useMemo(
     () =>
@@ -44,8 +49,57 @@ function PostsPage() {
     [posts]
   );
 
-  if (tag) {
+  if (!tag) {
     return (
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Hobby not found.
+          </Alert>
+        </div>
+      </Box>
+    );
+  }
+
+  if (!list?.length) {
+    return (
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>
+          <Alert severity="info">
+            <AlertTitle>Error</AlertTitle>
+            No posts found for selected hobby.
+          </Alert>
+        </div>
+      </Box>
+    );
+  }
+
+  return (
+    <Box>
+      <Box display="flex" justifyContent="flex-end">
+        <Button variant="contained" color="primary" onClick={navToEditDetails}>
+          Edit details
+        </Button>
+      </Box>
       <Box
         sx={{
           display: "grid",
@@ -58,26 +112,6 @@ function PostsPage() {
       >
         <div>{list}</div>
       </Box>
-    );
-  }
-
-  return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateRows: "repeat(3, 1fr)",
-        p: 1,
-        columnGap: 3,
-        rowGap: 1,
-        justifyContent: "center",
-      }}
-    >
-      <div>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          Hobby not found.
-        </Alert>
-      </div>
     </Box>
   );
 }

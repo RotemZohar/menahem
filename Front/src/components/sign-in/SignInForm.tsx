@@ -36,10 +36,13 @@ function SignInForm() {
           },
         })
         .then((res: any) => {
-          console.log(res);
           if (res.data !== "") {
             dispatch(setUser(res.data));
-            navigate("/posts");
+            if (res.data.admin) {
+              navigate("/admin");
+            } else {
+              navigate("/posts");
+            }
           } else {
             showError("Your email or password is incorrect.");
           }

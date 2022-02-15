@@ -3,6 +3,7 @@ import React from "react";
 import UsersTable from "./UsersTable";
 import PostsTab from "./PostsTab";
 import NewPostModal from "../posts/NewPostModal";
+import EditDetailsPage from "../edit-details/EditDetails";
 
 function TabPanel(props: { index: number; value: number; children: any }) {
     const { children, value, index, ...other } = props;
@@ -31,21 +32,25 @@ export default function AdminPage() {
         setValue(newValue);
     };
 
-    return (
-        <Box sx={{ width: "100%" }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Posts" />
-                    <Tab label="Users" />
-                </Tabs>
-                <TabPanel value={value} index={0}>
-                    <PostsTab />
-                    <NewPostModal />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <UsersTable />
-                </TabPanel>
-            </Box>
-        </Box>
-    );
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Posts" />
+          <Tab label="Users" />
+          <Tab label="Edit details" />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <PostsTab />
+          <NewPostModal />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <UsersTable />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <EditDetailsPage />
+        </TabPanel>
+      </Box>
+    </Box>
+  );
 }

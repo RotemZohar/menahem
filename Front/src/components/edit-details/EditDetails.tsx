@@ -3,9 +3,16 @@ import Snackbar from "@mui/material/Snackbar";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setUsername } from "../../redux/slices/userSlice";
 
 const EditDetailsPage = () => {
-  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.userReducer._id);
+  const userName = useSelector((state: RootState) => state.userReducer.name);
+
+  const [name, setName] = useState(userName);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [openSnack, setSnackOpen] = React.useState(false);
@@ -56,13 +63,14 @@ const EditDetailsPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password: confirmPassword }),
       };
-
+      console.log(userId);
       fetch(
-        `http://localhost:4000/users/updateDetails/61fd079f8855b4c80123094c`,
+        `http://localhost:4000/users/updateDetails/${userId}`,
         requestOptions
       )
         .then((res) => res.json())
         .then(() => {
+          dispatch(setUsername(name));
           handleSnackClick();
         })
         .catch((err) => {

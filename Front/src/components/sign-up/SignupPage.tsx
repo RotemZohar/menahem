@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setHobbyId } from "../../redux/slices/userSlice";
 
 interface Hobby {
   name: string;
@@ -63,12 +64,20 @@ const SingupPage = () => {
           password,
           name,
           hobbyId: currHobbyId,
+          isConnected: false,
         }),
       })
         .then((res) => {
           if (res.body) {
-            res.json().then((data) => dispatch(setCurrHobbyId(data.tag)));
-            navigate("/");
+            if (res.status === 500) {
+              alert("Email already exists!");
+            } else {
+              res.json().then((data) => {
+                console.log(data);
+                dispatch(setHobbyId(currHobbyId));
+              });
+              navigate("/");
+            }
           }
         })
         .catch((err) => {
