@@ -2,6 +2,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import UsersTable from "./UsersTable";
 import PostsTab from "./PostsTab";
+import NewPostModal from "../posts/NewPostModal";
 
 function TabPanel(props: { index: number; value: number; children: any }) {
     const { children, value, index, ...other } = props;
@@ -39,6 +40,7 @@ export default function AdminPage() {
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <PostsTab />
+                    <NewPostModal />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <UsersTable />

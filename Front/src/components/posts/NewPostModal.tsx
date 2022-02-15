@@ -1,17 +1,43 @@
 import React, { useState } from "react";
-import { Fab, Modal, Card, CardContent, Container } from "@mui/material";
+import {
+    Fab,
+    Modal,
+    Card,
+    CardContent,
+    Container,
+    Snackbar,
+    IconButton,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import NewPostForm from "./NewPostForm";
 
 const NewPostModal = () => {
-    const [open, setOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const message = "Post added";
 
-    const handleOpen = () => {
-        setOpen(true);
+    const handleModalOpen = () => {
+        setModalOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
+    const handleSnackbarOpen = () => {
+        setSnackbarOpen(true);
+    };
+
+    const handleSnackbarClose = (
+        event: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSnackbarOpen(false);
     };
 
     const fabStyle = {
@@ -20,20 +46,31 @@ const NewPostModal = () => {
         right: 20,
     };
 
+    const action = (
+        <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleSnackbarClose}
+        >
+            <CloseIcon fontSize="small" />
+        </IconButton>
+    );
+
     return (
         <div>
             <Fab
                 color="primary"
                 aria-label="add"
                 sx={fabStyle}
-                onClick={handleOpen}
+                onClick={handleModalOpen}
             >
                 <AddIcon />
             </Fab>
 
             <Modal
-                open={open}
-                onClose={handleClose}
+                open={modalOpen}
+                onClose={handleModalClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -47,11 +84,21 @@ const NewPostModal = () => {
                         }}
                     >
                         <CardContent>
-                            <NewPostForm handleClose={handleClose} />
+                            <NewPostForm
+                                handleModalClose={handleModalClose}
+                                handleSnackbarOpen={handleSnackbarOpen}
+                            />
                         </CardContent>
                     </Card>
                 </Container>
             </Modal>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                action={action}
+                message={message}
+            />
         </div>
     );
 };

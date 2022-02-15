@@ -1,34 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
     Box,
     TextField,
     Grid,
     Typography,
     Button,
-    Snackbar,
+    FormControl,
+    InputLabel,
+    Select,
+    SelectChangeEvent,
+    MenuItem,
 } from "@mui/material";
 
-const NewPostForm = (props: { handleClose: any }) => {
-    const { handleClose } = props;
-    const [open, setOpen] = useState(false);
+interface Hobby {
+    name: string;
+    _id: string;
+}
+
+const NewPostForm = (props: {
+    handleModalClose: any;
+    handleSnackbarOpen: any;
+}) => {
+    const { handleModalClose, handleSnackbarOpen } = props;
     const [title, setTitle] = useState("");
-    const [tag, setTag] = useState("");
+    const [currHobbyId, setCurrHobbyId] = useState("");
+    const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [text, setText] = useState("");
-    const [message, setMessage] = useState("");
     // const [imgUrl, setImgUrl] = useState("");
     const imgUrl =
         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fkids.nationalgeographic.com%2Fanimals%2Fmammals%2Ffacts%2Fgiant-panda&psig=AOvVaw1xmhsK7sueUKkud79PiLZv&ust=1644610708510000&source=images&cd=vfe&ved=0CAgQjRxqFwoTCNjtkMT69fUCFQAAAAAdAAAAABAD";
 
-    const handleSnackbarClose = (
-        event: React.SyntheticEvent | Event,
-        reason?: string
-    ) => {
-        if (reason === "clickaway") {
-            return;
-        }
+    useEffect(() => {
+        fetch("http://localhost:4000/hobbies/getAll", {
+            method: "GET",
+        })
+            .then((res) => {
+                res.json().then((data) => setHobbies(data));
+            })
+            .catch((err: any) => console.error(err));
+    }, []);
 
-        setOpen(false);
-    };
+    const list = useMemo(
+        () =>
+            hobbies.map((hobby) => (
+                <MenuItem value={hobby._id} key={hobby._id}>
+                    {hobby.name}
+                </MenuItem>
+            )),
+        [hobbies]
+    );
 
     const onSubmit = (e: any) => {
         e.preventDefault();
@@ -40,21 +60,22 @@ const NewPostForm = (props: { handleClose: any }) => {
             },
             body: JSON.stringify({
                 title,
-                tag,
+                currHobbyId,
                 text,
                 imgUrl,
             }),
         })
             .then(() => {
-                handleClose();
-                setMessage("Post added");
-                setOpen(true);
+                handleModalClose();
+                handleSnackbarOpen();
             })
             .catch((err) => {
-                setMessage("An error occurred");
-                setOpen(true);
                 console.error(err);
             });
+    };
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setCurrHobbyId(event.target.value);
     };
 
     return (
@@ -73,13 +94,17 @@ const NewPostForm = (props: { handleClose: any }) => {
                     />
                 </Grid>
                 <Grid item margin={1}>
-                    <TextField
-                        required
-                        label="Tag"
-                        type="text"
-                        value={tag}
-                        onChange={(e) => setTag(e.target.value)}
-                    />
+                    <FormControl sx={{ minWidth: 223 }}>
+                        <InputLabel>Hobby</InputLabel>
+                        <Select
+                            value={currHobbyId}
+                            onChange={handleChange}
+                            autoWidth
+                            required
+                        >
+                            {list}
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item margin={1}>
                     <TextField
@@ -105,12 +130,6 @@ const NewPostForm = (props: { handleClose: any }) => {
                     >
                         Add post
                     </Button>
-                    <Snackbar
-                        open={open}
-                        autoHideDuration={6000}
-                        onClose={handleSnackbarClose}
-                        message={message}
-                    />
                 </Grid>
             </Grid>
         </Box>
