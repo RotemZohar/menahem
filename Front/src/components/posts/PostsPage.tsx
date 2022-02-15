@@ -1,7 +1,9 @@
 import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
+
 import PostCard from "./PostCard";
 
 interface Post {
@@ -15,6 +17,7 @@ interface Post {
 function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const tag = useSelector((state: RootState) => state.userReducer.hobbyId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (tag) {
@@ -30,7 +33,9 @@ function PostsPage() {
     console.log("test");
   };
 
-  const navToEditDetails = () => {};
+  const navToEditDetails = () => {
+    navigate("editDetails");
+  };
   const list = useMemo(
     () =>
       posts?.map((post) => (
@@ -91,17 +96,24 @@ function PostsPage() {
   }
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateRows: "repeat(3, 1fr)",
-        p: 1,
-        columnGap: 3,
-        rowGap: 1,
-        justifyContent: "center",
-      }}
-    >
-      <div>{list}</div>
+    <Box>
+      <Box display="flex" justifyContent="flex-end">
+        <Button variant="contained" color="primary" onClick={navToEditDetails}>
+          Edit details
+        </Button>
+      </Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>{list}</div>
+      </Box>
     </Box>
   );
 }
