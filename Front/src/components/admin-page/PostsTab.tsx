@@ -156,7 +156,7 @@ function PostsTab() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateRows: "repeat(3, 1fr)",
+        gridTemplateRows: "repeat(1, 1fr)",
         p: 1,
         columnGap: 3,
         rowGap: 1,
