@@ -1,11 +1,21 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, createStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import storage from "redux-persist/lib/storage";
+import { persistStore, persistReducer } from "redux-persist";
 import userReducer from "./slices/userSlice";
 import postsReducer from "./slices/postsSlice";
 
-export const store = configureStore({
-  reducer: { userReducer, postsReducer },
-});
+const rootReducer = combineReducers({ userReducer, postsReducer });
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = createStore(persistedReducer);
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
