@@ -74,7 +74,10 @@ function PostCard(props: {
             type="string"
             onChange={(e) => setNewText(e.target.value)}
           />
-          <CardActions>
+          <CardActions sx={{ justifyContent: "center", mt: 1 }}>
+            <Button onClick={changeEditMode} variant="contained" size="small">
+              Cancel
+            </Button>
             <Button onClick={updateCard} variant="contained" size="small">
               Update
             </Button>
