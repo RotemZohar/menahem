@@ -18,8 +18,6 @@ export async function getAllHobbies(client: MongoClient) {
 export async function getHobby(client: MongoClient, _id: string) {
   try {
     const query = { _id: { $eq: _id } };
-    // Connect to the MongoDB cluster
-    // await client.connect();
     const result = await client
       .db(menahemDbName)
       .collection(hobbiesCollectionName)
