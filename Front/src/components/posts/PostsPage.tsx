@@ -16,6 +16,7 @@ interface Post {
 
 function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isLoadingCompleted, setIsLoadingCompleted] = useState<boolean>(false);
   const tag = useSelector((state: RootState) => state.userReducer.hobbyId);
   const navigate = useNavigate();
 
@@ -23,8 +24,9 @@ function PostsPage() {
     if (tag) {
       fetch(`http://localhost:4000/posts/byTag/${tag}`, {
         method: "GET",
-      }).then((res) => {
+      }).then((res) => {        
         res.json().then((data) => setPosts(data));
+        setIsLoadingCompleted(true);
       });
     }
   }, [tag]);
@@ -35,63 +37,37 @@ function PostsPage() {
     navigate("../editDetails");
   };
   const list = useMemo(
-    () =>
-      posts?.map((post) => (
-        <PostCard
-          parentCallback={handleCallback}
-          id={post._id}
-          imgUrl={post.imgUrl}
-          title={post.title}
-          text={post.text}
-          tag={post.tag}
-        />
-      )),
-    [posts]
+    () => {
+      let content = null;
+      if (!tag) {
+        content =
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Hobby not found.
+        </Alert>;
+      } else if (isLoadingCompleted && !posts?.length) {
+        content =
+        <Alert severity="info">
+          <AlertTitle>Error</AlertTitle>
+          No posts found for selected hobby.
+        </Alert>;        
+      } else {
+        content =
+        posts?.map((post) => (
+          <PostCard
+            parentCallback={handleCallback}
+            id={post._id}
+            imgUrl={post.imgUrl}
+            title={post.title}
+            text={post.text}
+            tag={post.tag}
+          />
+        ));
+      }
+      return content;
+    },
+    [tag, posts]
   );
-
-  if (!tag) {
-    return (
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateRows: "repeat(3, 1fr)",
-          p: 1,
-          columnGap: 3,
-          rowGap: 1,
-          justifyContent: "center",
-        }}
-      >
-        <div>
-          <Alert severity="error">
-            <AlertTitle>Error</AlertTitle>
-            Hobby not found.
-          </Alert>
-        </div>
-      </Box>
-    );
-  }
-
-  if (!list?.length) {
-    return (
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateRows: "repeat(3, 1fr)",
-          p: 1,
-          columnGap: 3,
-          rowGap: 1,
-          justifyContent: "center",
-        }}
-      >
-        <div>
-          <Alert severity="info">
-            <AlertTitle>Error</AlertTitle>
-            No posts found for selected hobby.
-          </Alert>
-        </div>
-      </Box>
-    );
-  }
 
   return (
     <Box>
