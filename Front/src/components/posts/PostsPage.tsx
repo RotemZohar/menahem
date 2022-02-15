@@ -34,7 +34,7 @@ function PostsPage() {
   };
 
   const navToEditDetails = () => {
-    navigate("editDetails");
+    navigate("../editDetails");
   };
   const list = useMemo(
     () =>
