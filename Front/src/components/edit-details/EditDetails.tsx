@@ -3,6 +3,8 @@ import Snackbar from "@mui/material/Snackbar";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const EditDetailsPage = () => {
   const [name, setName] = useState("");
@@ -10,6 +12,8 @@ const EditDetailsPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [openSnack, setSnackOpen] = React.useState(false);
   let passNotMatchText = "";
+
+  const userId = useSelector((state: RootState) => state.userReducer.id);
 
   const handleSnackClick = () => {
     setSnackOpen(true);
@@ -58,7 +62,7 @@ const EditDetailsPage = () => {
       };
 
       fetch(
-        `http://localhost:4000/users/updateDetails/61fd079f8855b4c80123094c`,
+        `http://localhost:4000/users/updateDetails/${userId}`,
         requestOptions
       )
         .then((res) => res.json())
