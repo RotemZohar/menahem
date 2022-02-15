@@ -26,7 +26,7 @@ const NewPostForm = (props: {
     const [tag, setTag] = useState("");
     const [hobbies, setHobbies] = useState<Hobby[]>([]);
     const [text, setText] = useState("");
-    // const [imgUrl, setImgUrl] = useState("");
+
     const imgUrl =
         "https://www.google.com/url?sa=i&url=https%3A%2F%2Fkids.nationalgeographic.com%2Fanimals%2Fmammals%2Ffacts%2Fgiant-panda&psig=AOvVaw1xmhsK7sueUKkud79PiLZv&ust=1644610708510000&source=images&cd=vfe&ved=0CAgQjRxqFwoTCNjtkMT69fUCFQAAAAAdAAAAABAD";
 
@@ -114,14 +114,6 @@ const NewPostForm = (props: {
                         onChange={(e) => setText(e.target.value)}
                     />
                 </Grid>
-                {/* <Grid item margin={1} xs={12}>
-                    <TextField
-                        label="ImgUrl"
-                        type="url"
-                        value={imgUrl}
-                        onChange={(e) => setImgUrl(e.target.value)}
-                    />
-                </Grid> */}
                 <Grid item margin={1}>
                     <Button
                         variant="contained"
