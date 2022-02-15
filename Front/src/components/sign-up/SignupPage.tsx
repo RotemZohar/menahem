@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setHobbyId } from "../../redux/slices/userSlice";
 
 interface Hobby {
   name: string;
@@ -67,7 +68,11 @@ const SingupPage = () => {
       })
         .then((res) => {
           if (res.body) {
-            res.json().then((data) => dispatch(setCurrHobbyId(data.tag)));
+            console.log(res.body);
+            res.json().then((data) => {
+              console.log(data);
+              dispatch(setHobbyId(currHobbyId));
+            });
             navigate("/");
           }
         })

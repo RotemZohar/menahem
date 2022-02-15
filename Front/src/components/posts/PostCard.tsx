@@ -116,7 +116,7 @@ function PostCard(props: {
 
 PostCard.defaultProps = {
   isAdminUser: false,
-  isEdit: true,
+  isEdit: false,
 };
 
 export default PostCard;
