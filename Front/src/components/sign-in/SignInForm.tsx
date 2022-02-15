@@ -29,12 +29,6 @@ function SignInForm() {
     if (!emailInput || !passwordInput) {
       showError("Please insert all fields!");
     } else {
-      // fetch(`http://localhost:4000/users/validateUser`, {
-      //   method: "POST",
-      //   body: JSON.stringify({
-      //     params: { email: emailInput, password: passwordInput },
-      //   }),
-      // }
       axios
         .get("http://localhost:4000/users/validateUser", {
           params: {
