@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box } from "@mui/material";
+import { Alert, AlertTitle, Box, Button } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -29,6 +29,8 @@ function PostsPage() {
   const handleCallback = () => {
     console.log("test");
   };
+
+  const navToEditDetails = () => {};
   const list = useMemo(
     () =>
       posts?.map((post) => (
@@ -63,7 +65,7 @@ function PostsPage() {
           </Alert>
         </div>
       </Box>
-    );    
+    );
   }
 
   if (!list?.length) {
