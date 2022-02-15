@@ -44,7 +44,7 @@ function PostsPage() {
     [posts]
   );
 
-  if (tag) {
+  if (!tag) {
     return (
       <Box
         sx={{
@@ -56,7 +56,34 @@ function PostsPage() {
           justifyContent: "center",
         }}
       >
-        <div>{list}</div>
+        <div>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Hobby not found.
+          </Alert>
+        </div>
+      </Box>
+    );    
+  }
+
+  if (!list?.length) {
+    return (
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateRows: "repeat(3, 1fr)",
+          p: 1,
+          columnGap: 3,
+          rowGap: 1,
+          justifyContent: "center",
+        }}
+      >
+        <div>
+          <Alert severity="info">
+            <AlertTitle>Error</AlertTitle>
+            No posts found for selected hobby.
+          </Alert>
+        </div>
       </Box>
     );
   }
@@ -72,12 +99,7 @@ function PostsPage() {
         justifyContent: "center",
       }}
     >
-      <div>
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          Hobby not found.
-        </Alert>
-      </div>
+      <div>{list}</div>
     </Box>
   );
 }
