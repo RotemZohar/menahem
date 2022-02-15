@@ -9,18 +9,6 @@ import {
   TableBody,
 } from "@mui/material";
 
-// const users: any[] = [];
-// axios.get("http://localhost:4000/users/getAll").then((res) => {
-//   res.data.map((user: any) =>
-//     users.push({
-//       id: user._id,
-//       email: user.email,
-//       name: user.name,
-//       connected: user.isConnected,
-//     })
-//   );
-// });
-
 export default function UsersTable() {
   const [users, setUsers] = useState<any[]>([]);
 
