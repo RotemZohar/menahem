@@ -2,6 +2,7 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import UsersTable from "./UsersTable";
 import PostsTab from "./PostsTab";
+import EditDetailsPage from "../edit-details/EditDetails";
 
 function TabPanel(props: { index: number; value: number; children: any }) {
   const { children, value, index, ...other } = props;
@@ -36,12 +37,16 @@ export default function AdminPage() {
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Posts" />
           <Tab label="Users" />
+          <Tab label="Edit details" />
         </Tabs>
         <TabPanel value={value} index={0}>
           <PostsTab />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <UsersTable />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <EditDetailsPage />
         </TabPanel>
       </Box>
     </Box>
