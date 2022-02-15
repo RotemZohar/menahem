@@ -106,7 +106,7 @@ function PostCard(props: {
   adminRules();
 
   return (
-    <Card sx={{ maxWidth: 345, marginTop: 5 }}>
+    <Card sx={{ width: 345, marginTop: 5 }}>
       <CardMedia component="img" height="140" image={imgUrl} />
       {EditableFields}
       {Actions}
