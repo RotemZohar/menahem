@@ -13,7 +13,7 @@ const EditDetailsPage = () => {
   const [openSnack, setSnackOpen] = React.useState(false);
   let passNotMatchText = "";
 
-  const userId = useSelector((state: RootState) => state.userReducer.id);
+  const userId = useSelector((state: RootState) => state.userReducer._id);
 
   const handleSnackClick = () => {
     setSnackOpen(true);

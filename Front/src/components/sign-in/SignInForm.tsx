@@ -36,7 +36,6 @@ function SignInForm() {
           },
         })
         .then((res: any) => {
-          console.log(res);
           if (res.data !== "") {
             dispatch(setUser(res.data));
             if (res.data.admin) {
