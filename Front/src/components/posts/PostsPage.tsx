@@ -29,9 +29,7 @@ function PostsPage() {
     }
   }, [tag]);
 
-  const handleCallback = () => {
-    console.log("test");
-  };
+  const handleCallback = () => {};
 
   const navToEditDetails = () => {
     navigate("../editDetails");
