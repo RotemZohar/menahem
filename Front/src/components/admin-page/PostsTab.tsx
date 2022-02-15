@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import PostCard from "../posts/PostCard";
-import { UPDATE_POST, DELETE_POST } from "../../consts/actions";
+import { UPDATE_POST, DELETE_POST, ADD_POST } from "../../consts/actions";
+import NewPostModal from "../posts/NewPostModal";
 
 interface Post {
   _id: string;
@@ -49,7 +50,6 @@ function PostsTab() {
           });
           return newPosts;
         });
-        console.log(serverData);
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +65,6 @@ function PostsTab() {
     fetch(`http://localhost:4000/posts/${id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setPosts((existingItems) => {
           const index = posts.findIndex((post) => post._id === id);
           return [
@@ -79,6 +78,46 @@ function PostsTab() {
       });
   };
 
+  const addPost = (data: any) => {
+    // fetch("http://localhost:4000/posts/add", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     title: data.title,
+    //     tag: data.tag,
+    //     text: data.text,
+    //     imgUrl: data.imgUrl,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((serverData) => {
+    //     setPosts((existingItems) => {
+    //       console.log(serverData);
+    //       const newPosts = existingItems;
+    //       data._id = serverData.insertedId;
+    //       newPosts.push(data);
+    //       return newPosts;
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    // const rom = posts;
+    // rom.push(posts[0]);
+    // setPosts(rom);
+    setPosts((existingItems) => {
+      const newPosts = existingItems;
+      newPosts.push(data);
+      return newPosts;
+    });
+
+    console.log(data);
+  };
+
   const handleCallback = (data: any, action: any) => {
     switch (action) {
       case UPDATE_POST:
@@ -86,6 +125,9 @@ function PostsTab() {
         break;
       case DELETE_POST:
         deletePost(data);
+        break;
+      case ADD_POST:
+        addPost(data);
         break;
       default:
         console.log("Unknown action");
@@ -121,7 +163,10 @@ function PostsTab() {
         justifyContent: "center",
       }}
     >
-      <div>{list}</div>
+      <div>
+        {list}
+        <NewPostModal handleCallback={handleCallback} />
+      </div>
     </Box>
   );
 }
