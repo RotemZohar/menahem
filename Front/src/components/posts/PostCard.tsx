@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button, TextField } from "@mui/material";
@@ -94,13 +95,16 @@ function PostCard(props: {
     if (isAdminUser) {
       Actions = (
         <CardActions>
-          <IconButton aria-label="delete" onClick={deletePost}>
-            <DeleteIcon />
-          </IconButton>
-
-          <IconButton aria-label="edit" onClick={changeEditMode}>
-            <EditIcon />
-          </IconButton>
+          <Tooltip title="Delete" placement="top">
+            <IconButton aria-label="delete" onClick={deletePost}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Edit" placement="top">
+            <IconButton aria-label="edit" onClick={changeEditMode}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
         </CardActions>
       );
     }

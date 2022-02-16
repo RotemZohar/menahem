@@ -2,7 +2,6 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import UsersTable from "./UsersTable";
 import PostsTab from "./PostsTab";
-import NewPostModal from "../posts/NewPostModal";
 import EditDetailsPage from "../edit-details/EditDetails";
 
 function TabPanel(props: { index: number; value: number; children: any }) {

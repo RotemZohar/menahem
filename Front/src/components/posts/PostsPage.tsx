@@ -24,7 +24,7 @@ function PostsPage() {
     if (tag) {
       fetch(`http://localhost:4000/posts/byTag/${tag}`, {
         method: "GET",
-      }).then((res) => {        
+      }).then((res) => {
         res.json().then((data) => setPosts(data));
         setIsLoadingCompleted(true);
       });
@@ -36,38 +36,36 @@ function PostsPage() {
   const navToEditDetails = () => {
     navigate("../editDetails");
   };
-  const list = useMemo(
-    () => {
-      let content = null;
-      if (!tag) {
-        content =
+  const list = useMemo(() => {
+    let content = null;
+    if (!tag) {
+      content = (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>
           Hobby not found.
-        </Alert>;
-      } else if (isLoadingCompleted && !posts?.length) {
-        content =
+        </Alert>
+      );
+    } else if (isLoadingCompleted && !posts?.length) {
+      content = (
         <Alert severity="info">
           <AlertTitle>Error</AlertTitle>
           No posts found for selected hobby.
-        </Alert>;        
-      } else {
-        content =
-        posts?.map((post) => (
-          <PostCard
-            parentCallback={handleCallback}
-            id={post._id}
-            imgUrl={post.imgUrl}
-            title={post.title}
-            text={post.text}
-            tag={post.tag}
-          />
-        ));
-      }
-      return content;
-    },
-    [tag, posts]
-  );
+        </Alert>
+      );
+    } else {
+      content = posts?.map((post) => (
+        <PostCard
+          parentCallback={handleCallback}
+          id={post._id}
+          imgUrl={post.imgUrl}
+          title={post.title}
+          text={post.text}
+          tag={post.tag}
+        />
+      ));
+    }
+    return content;
+  }, [tag, posts]);
 
   return (
     <Box>
@@ -79,7 +77,7 @@ function PostsPage() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateRows: "repeat(3, 1fr)",
+          gridTemplateRows: "repeat(1, 1fr)",
           p: 1,
           columnGap: 3,
           rowGap: 1,
