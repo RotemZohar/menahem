@@ -73,6 +73,8 @@ function PostCard(props: {
           />
           <TextField
             multiline
+            maxRows={4}
+            sx={{ minWidth: 223, mt: 2 }}
             value={newText}
             label="Text"
             type="string"
