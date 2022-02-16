@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import PostCard from "../posts/PostCard";
-import { UPDATE_POST, DELETE_POST } from "../../consts/actions";
+import { UPDATE_POST, DELETE_POST, ADD_POST } from "../../consts/actions";
+import NewPostModal from "../posts/NewPostModal";
 
 interface Post {
   _id: string;
@@ -49,7 +50,6 @@ function PostsTab() {
           });
           return newPosts;
         });
-        console.log(serverData);
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +65,6 @@ function PostsTab() {
     fetch(`http://localhost:4000/posts/${id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setPosts((existingItems) => {
           const index = posts.findIndex((post) => post._id === id);
           return [
@@ -79,6 +78,12 @@ function PostsTab() {
       });
   };
 
+  const addPost = (data: any) => {
+    const newPosts = [...posts];
+    newPosts.push(data);
+    setPosts(newPosts);
+  };
+
   const handleCallback = (data: any, action: any) => {
     switch (action) {
       case UPDATE_POST:
@@ -86,6 +91,9 @@ function PostsTab() {
         break;
       case DELETE_POST:
         deletePost(data);
+        break;
+      case ADD_POST:
+        addPost(data);
         break;
       default:
         console.log("Unknown action");
@@ -114,14 +122,17 @@ function PostsTab() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateRows: "repeat(1, 1fr)",
+        gridTemplateRows: "repeat(3, 1fr)",
         p: 1,
         columnGap: 3,
         rowGap: 1,
         justifyContent: "center",
       }}
     >
-      <div>{list}</div>
+      <div>
+        {list}
+        <NewPostModal handleCallback={handleCallback} />
+      </div>
     </Box>
   );
 }

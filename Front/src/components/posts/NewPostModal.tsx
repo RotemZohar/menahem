@@ -7,13 +7,14 @@ import {
   Container,
   Snackbar,
   IconButton,
-  Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import NewPostForm from "./NewPostForm";
+import { ADD_POST } from "../../consts/actions";
 
-const NewPostModal = () => {
+const NewPostModal = (props: { handleCallback: any }) => {
+  const { handleCallback } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -57,6 +58,10 @@ const NewPostModal = () => {
     </IconButton>
   );
 
+  const addEvent = (data: any) => {
+    handleCallback(data, ADD_POST);
+  };
+
   return (
     <div>
       <Fab
@@ -65,9 +70,7 @@ const NewPostModal = () => {
         sx={fabStyle}
         onClick={handleModalOpen}
       >
-        <Tooltip title="Add Post">
-          <AddIcon />
-        </Tooltip>
+        <AddIcon />
       </Fab>
 
       <Modal
@@ -89,6 +92,7 @@ const NewPostModal = () => {
               <NewPostForm
                 handleModalClose={handleModalClose}
                 handleSnackbarOpen={handleSnackbarOpen}
+                handleCallback={addEvent}
               />
             </CardContent>
           </Card>
