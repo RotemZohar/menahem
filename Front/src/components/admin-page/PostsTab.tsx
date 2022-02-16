@@ -68,14 +68,6 @@ function PostsTab() {
         let newItems = [...posts];
         newItems = newItems.filter((item) => item._id !== id);
         setPosts(newItems);
-        // setPosts((existingItems) => {
-
-        //   const index = posts.findIndex((post) => post._id === id);
-        //   return [
-        //     ...existingItems.slice(0, index),
-        //     ...existingItems.slice(index + 1),
-        //   ];
-        // });
       })
       .catch((err) => {
         console.error(err);

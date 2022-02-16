@@ -72,6 +72,7 @@ function PostCard(props: {
             onChange={(e) => setNewTitle(e.target.value)}
           />
           <TextField
+            multiline
             value={newText}
             label="Text"
             type="string"

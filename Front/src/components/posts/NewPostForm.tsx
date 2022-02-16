@@ -118,6 +118,7 @@ const NewPostForm = (props: {
         <Grid item margin={1}>
           <TextField
             required
+            multiline
             label="Description"
             type="text"
             value={text}
