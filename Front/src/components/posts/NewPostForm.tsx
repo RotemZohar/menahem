@@ -29,7 +29,8 @@ const NewPostForm = (props: {
   const [text, setText] = useState("");
   const [imgUrl, setimageUrl] = useState("");
 
-  const defaultImageUrl = `https://cdn.vox-cdn.com/thumbor/oDHhWJpBBC6t6_qtnPy5yyd2xBM=/0x0:1920x1080/1200x800/filters:focal(807x387:1113x693)/cdn.vox-cdn.com/uploads/chorus_image/image/56140119/Fallout4_NukaWorld_E3_02_1465776998.0.0.jpg`;
+  const defaultImageUrl =
+    "https://cdn.vox-cdn.com/thumbor/oDHhWJpBBC6t6_qtnPy5yyd2xBM=/0x0:1920x1080/1200x800/filters:focal(807x387:1113x693)/cdn.vox-cdn.com/uploads/chorus_image/image/56140119/Fallout4_NukaWorld_E3_02_1465776998.0.0.jpg";
 
   useEffect(() => {
     fetch("http://localhost:4000/hobbies/getAll", {
@@ -78,7 +79,7 @@ const NewPostForm = (props: {
           title,
           tag,
           text,
-          imgUrl,
+          imgUrl: image,
         };
 
         handleCallback(newPost);
