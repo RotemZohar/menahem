@@ -110,7 +110,7 @@ const NewPostForm = (props: {
         <Grid item margin={1}>
           <FormControl sx={{ minWidth: 223 }}>
             <InputLabel>Hobby</InputLabel>
-            <Select value={tag} onChange={handleChange} autoWidth required>
+            <Select value={tag} onChange={handleChange} required>
               {list}
             </Select>
           </FormControl>
