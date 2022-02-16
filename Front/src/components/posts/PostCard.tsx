@@ -57,7 +57,7 @@ function PostCard(props: {
           <Typography gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ height: 75, overflowX: "auto" }}>
+          <Typography variant="body2" color="text.secondary">
             {text}
           </Typography>
         </CardContent>
