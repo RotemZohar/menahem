@@ -7,6 +7,7 @@ import {
   Container,
   Snackbar,
   IconButton,
+  Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -64,14 +65,16 @@ const NewPostModal = (props: { handleCallback: any }) => {
 
   return (
     <div>
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={fabStyle}
-        onClick={handleModalOpen}
-      >
-        <AddIcon />
-      </Fab>
+      <Tooltip title="Add Post">
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={fabStyle}
+          onClick={handleModalOpen}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
 
       <Modal
         open={modalOpen}
