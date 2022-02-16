@@ -66,11 +66,15 @@ const NewPostForm = (props: {
         imgUrl,
       }),
     })
-      .then(() => {
+      .then((res) => res.json())
+      .then((data) => {
         handleModalClose();
         handleSnackbarOpen();
+        console.log("new data");
+        console.log(data);
 
         const newPost = {
+          _id: data.insertedId,
           title,
           tag,
           text,
