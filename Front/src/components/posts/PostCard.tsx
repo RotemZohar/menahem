@@ -28,6 +28,8 @@ function PostCard(props: {
   const [editState, setEditState] = useState(isEdit);
 
   const changeEditMode = () => {
+    setNewTitle(title);
+    setNewText(text);
     setEditState(!editState);
   };
 

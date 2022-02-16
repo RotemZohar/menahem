@@ -70,8 +70,6 @@ const NewPostForm = (props: {
       .then((data) => {
         handleModalClose();
         handleSnackbarOpen();
-        console.log("new data");
-        console.log(data);
 
         const newPost = {
           _id: data.insertedId,
