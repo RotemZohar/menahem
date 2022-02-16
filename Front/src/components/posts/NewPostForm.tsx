@@ -119,6 +119,8 @@ const NewPostForm = (props: {
           <TextField
             required
             multiline
+            maxRows={4}
+            sx={{ minWidth: 223 }}
             label="Description"
             type="text"
             value={text}
