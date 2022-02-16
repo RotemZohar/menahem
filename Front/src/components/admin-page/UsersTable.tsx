@@ -17,7 +17,6 @@ export default function UsersTable() {
       method: "GET",
     }).then((res) => {
       res.json().then((data) => {
-        console.log(data);
         setUsers(data);
       });
     });

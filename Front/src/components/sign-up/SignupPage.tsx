@@ -73,7 +73,6 @@ const SingupPage = () => {
               alert("Email already exists!");
             } else {
               res.json().then((data) => {
-                console.log(data);
                 dispatch(setHobbyId(currHobbyId));
               });
               navigate("/");
