@@ -63,7 +63,6 @@ const EditDetailsPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password: confirmPassword }),
       };
-      console.log(userId);
       fetch(
         `http://localhost:4000/users/updateDetails/${userId}`,
         requestOptions
