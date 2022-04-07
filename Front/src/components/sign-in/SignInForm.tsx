@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/userSlice";
+import "../../i18n/config";
 
 function SignInForm() {
+  const { t } = useTranslation();
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -74,7 +77,7 @@ function SignInForm() {
         onChange={(e) => setEmailInput(e.target.value)}
       />
       <TextField
-        label="Password"
+        label={t("user.password")}
         type="password"
         error={error}
         onChange={(e) => setPasswordInput(e.target.value)}
